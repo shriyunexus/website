@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Button from '../ui/button';
 import './contact.css';
 
 /* ── Project Scope Options ────────────────────────────────────────────────── */
 const scopeOptions = [
-  'Greenfield Build (0 to 1)',
-  'System Modernization',
-  'Workflow Automation',
-  'Scale & Cloud Engineering',
-  'General Technical Advisory',
+  'General Inquiry',
+  'Request a Quote / Pricing',
+  'Product / Service Demo',
+  'Partnership / Collaboration',
+  'Careers',
+  'Technical Support',
+  'Media / Press',
+  'Investor Relations',
+  'Feedback / Suggestion',
+  'Other',
 ];
 
 /* ── AEO / GEO Optimized FAQ Data (Engineered for AI Search Engines) ─────── */
@@ -35,6 +40,233 @@ const contactFaqs = [
   },
 ];
 
+/* ── Knuth-Plass Balanced Line-Breaking Engine for Scope Chips ───────────────
+   Finds the globally optimal partition of variable-width chips into balanced rows
+   that minimizes wasted line-end whitespace variance (O(n*k) dynamic programming).
+─────────────────────────────────────────────────────────────────────────────── */
+const precomputedChipWidths = {
+  'General Inquiry': 144,
+  'Request a Quote / Pricing': 208,
+  'Product / Service Demo': 188,
+  'Partnership / Collaboration': 218,
+  'Careers': 96,
+  'Technical Support': 158,
+  'Media / Press': 128,
+  'Investor Relations': 158,
+  'Feedback / Suggestion': 183,
+  'Other': 84,
+};
+
+function computeBalancedRows(items, containerWidth, gap = 12, measuredWidths = null) {
+  if (!containerWidth || containerWidth <= 0) {
+    return [items.slice(0, 3), items.slice(3, 6), items.slice(6, 10)];
+  }
+
+  const widths = items.map(
+    (item, idx) => (measuredWidths && measuredWidths[idx]) || precomputedChipWidths[item] || 150
+  );
+
+  const n = items.length;
+  const maxWidth = Math.max(...widths);
+
+  if (containerWidth < maxWidth) {
+    return [items];
+  }
+
+  let greedyRows = 1;
+  let curW = 0;
+  for (let i = 0; i < n; i++) {
+    const w = widths[i];
+    if (curW === 0) {
+      curW = w;
+    } else if (curW + gap + w <= containerWidth) {
+      curW += gap + w;
+    } else {
+      greedyRows++;
+      curW = w;
+    }
+  }
+
+  function solvePartition(k) {
+    const memo = Array.from({ length: n + 1 }, () => Array(k + 1).fill(null));
+
+    function dp(i, row) {
+      if (i === n && row === k) return { cost: 0, path: [] };
+      if (i === n || row === k) return { cost: Infinity, path: [] };
+      if (memo[i][row] !== null) return memo[i][row];
+
+      let bestCost = Infinity;
+      let bestPath = [];
+      let rowW = 0;
+
+      for (let j = i; j < n; j++) {
+        rowW += widths[j] + (j > i ? gap : 0);
+        if (rowW > containerWidth) break;
+
+        const unused = containerWidth - rowW;
+        const penalty = row === k - 1 ? unused * 0.7 : unused * unused;
+
+        const next = dp(j + 1, row + 1);
+        if (next.cost !== Infinity) {
+          const totalCost = penalty + next.cost;
+          if (totalCost < bestCost) {
+            bestCost = totalCost;
+            bestPath = [j + 1, ...next.path];
+          }
+        }
+      }
+
+      memo[i][row] = { cost: bestCost, path: bestPath };
+      return memo[i][row];
+    }
+
+    const res = dp(0, 0);
+    if (res.cost === Infinity) return null;
+
+    const rows = [];
+    let start = 0;
+    for (const split of res.path) {
+      rows.push(items.slice(start, split));
+      start = split;
+    }
+    return rows;
+  }
+
+  let best = solvePartition(greedyRows);
+  if (greedyRows < n) {
+    const alt = solvePartition(greedyRows + 1);
+    if (alt && (!best || alt.cost < best.cost * 0.82)) {
+      best = alt;
+    }
+  }
+
+  return best || [items];
+}
+
+function IntelligentScopeChips({ options, selectedScope, onSelect }) {
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(672);
+  const [measuredWidths, setMeasuredWidths] = useState(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const chips = containerRef.current.querySelectorAll('.scope-chip');
+    if (chips.length === options.length) {
+      const widths = Array.from(chips).map((el) => Math.ceil(el.getBoundingClientRect().width));
+      setMeasuredWidths(widths);
+    }
+  }, [options]);
+
+  useEffect(() => {
+    if (!containerRef.current || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = Math.round(entry.contentRect.width);
+        if (width > 0) {
+          setContainerWidth(width);
+        }
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const rows = useMemo(() => {
+    return computeBalancedRows(options, containerWidth, 12, measuredWidths);
+  }, [options, containerWidth, measuredWidths]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="form-scope-chips"
+      role="radiogroup"
+      aria-label="What is the primary objective?"
+    >
+      {rows.map((row, rowIdx) => (
+        <div key={rowIdx} className="form-scope-row">
+          {row.map((scope) => {
+            const isSelected = selectedScope === scope;
+            return (
+              <button
+                key={scope}
+                type="button"
+                className={`scope-chip ${isSelected ? 'is-selected' : ''}`}
+                onClick={() => onSelect(scope)}
+                role="radio"
+                aria-checked={isSelected}
+              >
+                {scope}
+              </button>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Objective-Specific Guidance ─────────────────────────────────────────────── */
+const OBJECTIVE_GUIDANCE = {
+  'General Inquiry': 'Create a simple message saying the user would like to discuss an enquiry.',
+  'Request a Quote / Pricing': 'Say the user would like to discuss pricing or get a quote.',
+  'Product / Service Demo': 'Say the user would like to see or learn more about a product or service.',
+  'Partnership / Collaboration': 'Say the user would like to discuss a possible collaboration or partnership.',
+  'Careers': 'Say the user is interested in career opportunities at Shriyu Nexus Solutions.',
+  'Technical Support': 'Say the user needs help with a technical issue or support.',
+  'Media / Press': 'Say the user would like to discuss a media or press-related matter.',
+  'Investor Relations': 'Say the user would like to discuss an investor-related matter.',
+  'Feedback / Suggestion': 'Say the user would like to share feedback or a suggestion.',
+  'Other': 'Create a simple message saying the user would like to discuss something with the team.',
+};
+
+/* ── Dynamic ChatGPT Prompt Builder for Contact Inquiries ──────────────────── */
+const buildChatGptPrompt = (scope) => {
+  const objective = scope || 'General Inquiry';
+  const guidance = OBJECTIVE_GUIDANCE[objective] || OBJECTIVE_GUIDANCE['General Inquiry'];
+
+  return `You are helping a user create a short, natural message to start a conversation with Shriyu Nexus Solutions.
+
+You have ONLY this detail:
+
+Primary Objective:
+${objective}
+
+Create ONE short, friendly, professional message that the user can copy and send directly to Shriyu Nexus Solutions.
+
+IMPORTANT:
+- Use the selected Primary Objective to determine the purpose of the message.
+- Do not include personal names or assume user identity.
+- Do not invent any business, project, technical, budget, timeline, or personal details.
+- Do not assume what the user specifically needs beyond the selected objective.
+- Keep the language simple and natural.
+- Make it sound like a real person, not AI-generated.
+- Keep it short and conversational.
+- Do not use overly formal or corporate language.
+- Do not repeat the objective word-for-word if it sounds unnatural.
+- Do not ask detailed questions.
+- A simple request to discuss the matter is enough.
+- The message must be between 20 and 1000 characters.
+- Prefer around 1–2 short sentences.
+- Return ONLY the message.
+- No quotation marks.
+- No heading.
+- No explanation.
+- No bullet points.
+- No character count.
+
+OBJECTIVE-SPECIFIC GUIDANCE:
+
+${objective}:
+${guidance}
+
+STYLE:
+The message should feel similar to something a person would actually type in a contact form or WhatsApp message.
+
+Return ONLY the final message.`;
+};
+
 export default function ContactPage({ onStartConversation }) {
   // Form State
   const [formData, setFormData] = useState({
@@ -50,6 +282,16 @@ export default function ContactPage({ onStartConversation }) {
   const [emailCopied, setEmailCopied] = useState(false);
   const [phoneCopied, setPhoneCopied] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
+
+  // Auto-dismiss floating toast notification after 5 seconds
+  useEffect(() => {
+    if (formStatus.state === 'error' || formStatus.state === 'success') {
+      const timer = setTimeout(() => {
+        setFormStatus({ state: 'idle', message: '' });
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [formStatus.state, formStatus.message]);
 
   // SEO & AEO Meta Management + Schema Injection
   useEffect(() => {
@@ -142,10 +384,19 @@ export default function ContactPage({ onStartConversation }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.firstName.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!formData.firstName.trim() || !formData.email.trim() || !formData.phone.trim()) {
       setFormStatus({
         state: 'error',
-        message: 'Please provide your name, a valid email address, and a brief message.',
+        message: 'Please provide your name, email address, and phone number.',
+      });
+      return;
+    }
+
+    const trimmedMsg = formData.message.trim();
+    if (trimmedMsg.length > 0 && trimmedMsg.length < 20) {
+      setFormStatus({
+        state: 'error',
+        message: 'Message should be at least 20 characters, or leave it blank.',
       });
       return;
     }
@@ -169,6 +420,10 @@ export default function ContactPage({ onStartConversation }) {
       });
     }, 600);
   };
+
+  const chatGptUrl = `https://chatgpt.com/?q=${encodeURIComponent(
+    buildChatGptPrompt(formData.scope)
+  )}`;
 
   const handleCopyEmail = (e) => {
     e.preventDefault();
@@ -274,7 +529,7 @@ export default function ContactPage({ onStartConversation }) {
             {/* Phone Number Field */}
             <div className="form-group">
               <label htmlFor="contact-phone" className="form-label">
-                Phone number / WhatsApp
+                Phone number <span className="form-label-required">*</span>
               </label>
               <input
                 type="tel"
@@ -284,33 +539,40 @@ export default function ContactPage({ onStartConversation }) {
                 placeholder="+1 (555) 000-0000"
                 value={formData.phone}
                 onChange={handleChange}
+                required
               />
             </div>
 
-            {/* Scope / Need Selector Chips */}
+            {/* Scope / Need Selector Chips (Intelligent Balanced Layout) */}
             <div className="form-scope-wrap">
               <label className="form-label">What is the primary objective?</label>
-              <div className="form-scope-chips" role="radiogroup" aria-label="Project Scope">
-                {scopeOptions.map((scope) => (
-                  <button
-                    key={scope}
-                    type="button"
-                    className={`scope-chip ${formData.scope === scope ? 'is-selected' : ''}`}
-                    onClick={() => handleScopeSelect(scope)}
-                    role="radio"
-                    aria-checked={formData.scope === scope}
-                  >
-                    {scope}
-                  </button>
-                ))}
-              </div>
+              <IntelligentScopeChips
+                options={scopeOptions}
+                selectedScope={formData.scope}
+                onSelect={handleScopeSelect}
+              />
             </div>
 
-            {/* Message Area */}
+            {/* Message Area (Optional, with AI Draft Assistant) */}
             <div className="form-group">
-              <label htmlFor="contact-message" className="form-label">
-                Message <span className="form-label-required">*</span>
-              </label>
+              <div className="form-label-row">
+                <label htmlFor="contact-message" className="form-label">
+                  Message <span className="form-label-optional">(Optional)</span>
+                </label>
+                <a
+                  href={chatGptUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="form-ai-draft-btn"
+                  title="Draft your message with ChatGPT based on your objective"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                  </svg>
+                  <span>Write with AI</span>
+                  <span className="ai-btn-arrow" aria-hidden="true">↗</span>
+                </a>
+              </div>
               <textarea
                 id="contact-message"
                 name="message"
@@ -319,21 +581,16 @@ export default function ContactPage({ onStartConversation }) {
                 value={formData.message}
                 onChange={handleChange}
                 rows={4}
-                required
+                maxLength={1000}
               />
+              <div className="form-message-meta">
+                <span className="form-char-count">
+                  {formData.message.length > 0
+                    ? `${formData.message.length} / 1,000 characters`
+                    : 'Optional • 20 to 1,000 characters if provided'}
+                </span>
+              </div>
             </div>
-
-            {/* Feedback Alert if applicable */}
-            {formStatus.state === 'error' && (
-              <div className="form-feedback-alert error" role="alert">
-                {formStatus.message}
-              </div>
-            )}
-            {formStatus.state === 'success' && (
-              <div className="form-feedback-alert success" role="status">
-                {formStatus.message}
-              </div>
-            )}
 
             {/* Submit Action Group */}
             <div className="form-submit-wrap">
@@ -391,92 +648,13 @@ export default function ContactPage({ onStartConversation }) {
             </p>
           </div>
 
-          {/* ── 4 Contact Channel Cards (Enterprise Senior Architecture Standard) ── */}
+          {/* ── Executive Contact Grid: Corporate Presence (2*1 Full) + Comms Stack (2*1 Top/Bottom) ── */}
           <div className="contact-cards-grid">
-            {/* Card 1: Direct Inquiries */}
-            <div className="contact-card">
+            {/* Left Column: 2*1 Full - Corporate Presence */}
+            <div className="contact-card contact-card--presence">
               <div className="contact-card-rim" aria-hidden="true" />
-              <div className="contact-card-top">
-                <div className="contact-card-header-row">
-                  <div className="contact-card-icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                  </div>
-                  <span className="contact-card-tag">PRIMARY CHANNEL</span>
-                </div>
-                <h3 className="contact-card-title">Direct Inquiries</h3>
-              </div>
-              <div className="contact-card-bottom">
-                <a
-                  href="mailto:shriyunexus@gmail.com"
-                  className="contact-card-value"
-                  title="Send direct email"
-                >
-                  shriyunexus@gmail.com
-                </a>
-                <p className="contact-card-desc">For partnerships, scoping, and new builds</p>
-                <button
-                  type="button"
-                  className="contact-copy-pill"
-                  onClick={handleCopyEmail}
-                  title="Copy email address"
-                >
-                  {emailCopied ? '✓ Copied to clipboard' : 'Copy Email Address'}
-                </button>
-              </div>
-            </div>
-
-            {/* Card 2: Direct Line & WhatsApp */}
-            <div className="contact-card">
-              <div className="contact-card-rim" aria-hidden="true" />
-              <div className="contact-card-top">
-                <div className="contact-card-header-row">
-                  <div className="contact-card-icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                  </div>
-                  <span className="contact-card-tag">DIRECT LINE</span>
-                </div>
-                <h3 className="contact-card-title">Voice &amp; WhatsApp</h3>
-              </div>
-              <div className="contact-card-bottom">
-                <a
-                  href="tel:+918160156799"
-                  className="contact-card-value"
-                  title="Call direct"
-                >
-                  +91 8160156799
-                </a>
-                <p className="contact-card-desc">Direct executive voice &amp; WhatsApp messaging</p>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
-                  <a
-                    href="https://wa.me/918160156799?text=Hello%20Shriyu%20Nexus%20team%2C%20I%20would%20like%20to%20discuss%20our%20project%20requirements%20and%20explore%20collaborating%20with%20you."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-copy-pill"
-                    title="Chat on WhatsApp"
-                  >
-                    WhatsApp Chat ↗
-                  </a>
-                  <button
-                    type="button"
-                    className="contact-copy-pill"
-                    onClick={handleCopyPhone}
-                    title="Copy phone number"
-                  >
-                    {phoneCopied ? '✓ Copied' : 'Copy Number'}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: Corporate Presence (Combined Bharuch HQ & Ahmedabad Node) */}
-            <div className="contact-card">
-              <div className="contact-card-rim" aria-hidden="true" />
-              <div className="contact-card-top">
+              
+              <div className="presence-card-header">
                 <div className="contact-card-header-row">
                   <div className="contact-card-icon" aria-hidden="true">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -486,49 +664,129 @@ export default function ContactPage({ onStartConversation }) {
                   </div>
                   <span className="contact-card-tag">PHYSICAL HUBS</span>
                 </div>
-                <h3 className="contact-card-title">Corporate Presence</h3>
+
+                <div className="presence-title-group">
+                  <h3 className="contact-card-title">Corporate Presence</h3>
+                  <div className="presence-main-val">Bharuch (HQ) &amp; Ahmedabad</div>
+                  <p className="presence-lead-desc">Registered corporate headquarters &amp; active technical engineering node</p>
+                </div>
               </div>
-              <div className="contact-card-bottom">
-                <span className="contact-card-value">Bharuch (HQ) &amp; Ahmedabad</span>
-                <div className="contact-dual-addresses">
-                  <div className="contact-sub-addr">
-                    <span className="contact-sub-tag">Headquarters</span>
-                    <span>Mahamangaliya Residency, Zadeshwar Cross Rd, Bharuch - 392011</span>
+
+              <div className="contact-dual-addresses">
+                {/* Headquarters Hub (Full Official Registered Address) */}
+                <div className="contact-sub-addr">
+                  <div className="contact-sub-header">
+                    <div className="contact-sub-title-wrap">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="contact-addr-icon" aria-hidden="true">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <span className="contact-sub-tag">Headquarters</span>
+                    </div>
                   </div>
-                  <div className="contact-sub-addr">
-                    <span className="contact-sub-tag">Engineering Node</span>
-                    <span>Prabhat Chowk, Ghatlodiya, Ahmedabad - 380061</span>
+                  <div className="contact-sub-line">
+                    F/101, Mahamangaliya Residency, Tavra Road, Zadeshwar Cross Rd, Bharuch, Gujarat &ndash; 392011
+                  </div>
+                </div>
+
+                {/* Engineering Node Hub */}
+                <div className="contact-sub-addr">
+                  <div className="contact-sub-header">
+                    <div className="contact-sub-title-wrap">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="contact-addr-icon" aria-hidden="true">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <span className="contact-sub-tag">Engineering Node</span>
+                    </div>
+                  </div>
+                  <div className="contact-sub-line">
+                    Prabhat Chowk, Ghatlodiya, Ahmedabad, Gujarat &ndash; 380061
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Card 4: Technical Advisory & Response Protocol */}
-            <div className="contact-card">
-              <div className="contact-card-rim" aria-hidden="true" />
-              <div className="contact-card-top">
-                <div className="contact-card-header-row">
-                  <div className="contact-card-icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
+            {/* Right Column: 2*1 Top/Bottom Stack -> Direct Inquiries & Contact Number */}
+            <div className="contact-cards-stack">
+              {/* Top 1*1 - Direct Inquiries */}
+              <div className="contact-card">
+                <div className="contact-card-rim" aria-hidden="true" />
+                <div className="contact-card-top">
+                  <div className="contact-card-header-row">
+                    <div className="contact-card-icon" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                      </svg>
+                    </div>
+                    <span className="contact-card-tag">PRIMARY CHANNEL</span>
                   </div>
-                  <span className="contact-card-tag">RESPONSE SLA</span>
+                  <h3 className="contact-card-title">Direct Inquiries</h3>
                 </div>
-                <h3 className="contact-card-title">Technical Advisory</h3>
+                <div className="contact-card-bottom">
+                  <a
+                    href="mailto:shriyunexus@gmail.com"
+                    className="contact-card-value"
+                    title="Send direct email"
+                  >
+                    shriyunexus@gmail.com
+                  </a>
+                  <p className="contact-card-desc">For partnerships, scoping, and new builds</p>
+                  <button
+                    type="button"
+                    className="contact-copy-pill"
+                    onClick={handleCopyEmail}
+                    title="Copy email address"
+                  >
+                    {emailCopied ? '✓ Copied to clipboard' : 'Copy Email Address'}
+                  </button>
+                </div>
               </div>
-              <div className="contact-card-bottom">
-                <span className="contact-card-value">&lt; 24h Turnaround</span>
-                <p className="contact-card-desc">Direct technical review with senior software architects</p>
-                <button
-                  type="button"
-                  className="contact-copy-pill"
-                  onClick={onStartConversation}
-                  style={{ marginTop: '6px', fontWeight: '700' }}
-                >
-                  Schedule an Audit →
-                </button>
+
+              {/* Bottom 1*1 - Contact Number */}
+              <div className="contact-card">
+                <div className="contact-card-rim" aria-hidden="true" />
+                <div className="contact-card-top">
+                  <div className="contact-card-header-row">
+                    <div className="contact-card-icon" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                      </svg>
+                    </div>
+                    <span className="contact-card-tag">DIRECT LINE</span>
+                  </div>
+                  <h3 className="contact-card-title">Contact Number</h3>
+                </div>
+                <div className="contact-card-bottom">
+                  <a
+                    href="tel:+918160156799"
+                    className="contact-card-value"
+                    title="Call direct"
+                  >
+                    +91 8160156799
+                  </a>
+                  <p className="contact-card-desc">Direct executive voice &amp; WhatsApp messaging</p>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+                    <a
+                      href="https://wa.me/918160156799?text=Hello%20Shriyu%20Nexus%20team%2C%20I%20would%20like%20to%20discuss%20our%20project%20requirements%20and%20explore%20collaborating%20with%20you."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="contact-copy-pill"
+                      title="Chat on WhatsApp"
+                    >
+                      WhatsApp Chat ↗
+                    </a>
+                    <button
+                      type="button"
+                      className="contact-copy-pill"
+                      onClick={handleCopyPhone}
+                      title="Copy phone number"
+                    >
+                      {phoneCopied ? '✓ Copied' : 'Copy Number'}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -577,6 +835,51 @@ export default function ContactPage({ onStartConversation }) {
           </div>
         </section>
       </div>
+
+      {/* ── Executive Floating Toast Notification ────────────────────────── */}
+      {(formStatus.state === 'error' || formStatus.state === 'success') && (
+        <div
+          className={`contact-toast-container ${formStatus.state}`}
+          role="status"
+          aria-live="assertive"
+        >
+          <div className={`contact-toast ${formStatus.state}`}>
+            <div className="contact-toast-icon-wrap" aria-hidden="true">
+              {formStatus.state === 'error' ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              )}
+            </div>
+
+            <div className="contact-toast-content">
+              <div className="contact-toast-title">
+                {formStatus.state === 'error' ? 'Action Required' : 'Message Transmitted'}
+              </div>
+              <p className="contact-toast-message">{formStatus.message}</p>
+            </div>
+
+            <button
+              type="button"
+              className="contact-toast-close"
+              onClick={() => setFormStatus({ state: 'idle', message: '' })}
+              aria-label="Dismiss notification"
+              title="Close notification"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </article>
   );
 }

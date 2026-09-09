@@ -238,6 +238,88 @@
   font-size: 13px;
 }
 
+.form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.form-label-optional {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* ── Write with AI Button (Direct ChatGPT Prompt Handoff) ─────────────── */
+.form-ai-draft-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(160, 187, 255, 0.08);
+  border: 1px solid rgba(160, 187, 255, 0.24);
+  color: var(--brand-blue, #A0BBFF);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: all 0.2s var(--ease-out);
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-theme="light"] .form-ai-draft-btn {
+  background: rgba(33, 31, 29, 0.04);
+  border-color: rgba(33, 31, 29, 0.16);
+  color: #3B5CB8;
+}
+
+.form-ai-draft-btn:hover {
+  background: rgba(160, 187, 255, 0.18);
+  border-color: var(--brand-blue, #A0BBFF);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px rgba(160, 187, 255, 0.22);
+}
+
+[data-theme="light"] .form-ai-draft-btn:hover {
+  background: #211F1D;
+  border-color: #211F1D;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(33, 31, 29, 0.12);
+}
+
+.ai-btn-arrow {
+  font-size: 10.5px;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.form-ai-draft-btn:hover .ai-btn-arrow {
+  transform: translate(1px, -1px);
+}
+
+.form-message-meta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 3px;
+}
+
+.form-char-count {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.65;
+}
+
 .form-input,
 .form-textarea {
   width: 100%;
@@ -302,66 +384,128 @@
   line-height: 1.55;
 }
 
-/* ── Scope Chips Selector ───────────────────────────────────────────────── */
+/* ── Scope Chips Selector (Intelligent Layout Engine) ───────────────────── */
 .form-scope-wrap {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .form-scope-chips {
   display: flex;
+  flex-direction: column;
+  gap: 10px; /* row / vertical gap: 10px */
+  width: 100%;
+}
+
+.form-scope-row {
+  display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px; /* column / horizontal gap: 12px */
+  align-items: center;
+  width: 100%;
 }
 
 .scope-chip {
-  padding: 8px 14px;
-  border-radius: 8px;
+  position: relative;
+  flex: 0 0 auto;
+  width: fit-content;
+  padding: 8px 16px;
+  border-radius: 9999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-muted);
+  color: var(--text-secondary, #A0A5B2);
   font-family: var(--font-heading);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
   cursor: pointer;
   outline: none;
-  transition: all 0.22s ease;
+  transition:
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
   user-select: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.scope-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  flex-shrink: 0;
+  transition: opacity 180ms ease, transform 180ms var(--ease-out);
 }
 
 [data-theme="light"] .scope-chip {
   background: rgba(33, 31, 29, 0.04);
   border-color: rgba(33, 31, 29, 0.12);
-  color: #4A4744;
+  color: #55524E;
 }
 
 .scope-chip:hover {
-  border-color: rgba(255, 255, 255, 0.25);
-  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--text-primary, #FFFFFF);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.scope-chip:hover::before {
+  opacity: 0.7;
 }
 
 [data-theme="light"] .scope-chip:hover {
-  border-color: rgba(33, 31, 29, 0.25);
+  border-color: rgba(33, 31, 29, 0.28);
   color: #1A1918;
+  background: rgba(33, 31, 29, 0.08);
+  transform: translateY(-1px);
 }
 
+.scope-chip:focus-visible {
+  outline: 2px solid var(--brand-blue, #A0BBFF);
+  outline-offset: 2px;
+}
+
+/* Stable Selected State: Font weight locked to 500 to avoid layout jumping */
 .scope-chip.is-selected {
   background: var(--brand-blue, #A0BBFF);
   border-color: var(--brand-blue, #A0BBFF);
-  color: #121316;
-  font-weight: 600;
-  box-shadow: 0 2px 10px rgba(160, 187, 255, 0.25);
+  color: #0E1015;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(160, 187, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.scope-chip.is-selected::before {
+  opacity: 1;
+  background: #0E1015;
+  transform: scale(1.15);
 }
 
 [data-theme="light"] .scope-chip.is-selected {
-  background: var(--text-primary, #211F1D);
-  border-color: var(--text-primary, #211F1D);
+  background: #211F1D;
+  border-color: #211F1D;
   color: #F7F4EF;
-  box-shadow: 0 2px 10px rgba(33, 31, 29, 0.15);
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(33, 31, 29, 0.18);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .scope-chip.is-selected::before {
+  opacity: 1;
+  background: #F7F4EF;
+  transform: scale(1.15);
 }
 
 /* ── Form Actions & Trust Micro-Copy ────────────────────────────────────── */
@@ -410,26 +554,194 @@
   font-size: 10px;
 }
 
-/* Inline Form Submission Feedback */
-.form-feedback-alert {
-  padding: 16px 20px;
-  border-radius: 8px;
+/* ── Executive Floating Toast Notification ──────────────────────────────── */
+.contact-toast-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  animation: contactToastIn 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes contactToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.contact-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 340px;
+  max-width: 440px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(15, 17, 23, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 20px 48px -10px rgba(0, 0, 0, 0.65),
+    0 4px 16px rgba(0, 0, 0, 0.35);
+  color: var(--text-primary, #FFFFFF);
   font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
+  transition: transform 180ms ease, opacity 180ms ease;
 }
 
-.form-feedback-alert.success {
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.3);
+[data-theme="light"] .contact-toast {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(33, 31, 29, 0.14);
+  box-shadow:
+    0 20px 48px -10px rgba(33, 31, 29, 0.18),
+    0 4px 16px rgba(33, 31, 29, 0.08);
+  color: #1F2937;
+}
+
+.contact-toast.error {
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow:
+    0 20px 48px -10px rgba(0, 0, 0, 0.65),
+    0 0 24px -2px rgba(239, 68, 68, 0.25);
+}
+
+[data-theme="light"] .contact-toast.error {
+  border-color: rgba(220, 38, 38, 0.38);
+  box-shadow:
+    0 20px 48px -10px rgba(220, 38, 38, 0.16),
+    0 4px 16px rgba(33, 31, 29, 0.08);
+}
+
+.contact-toast.success {
+  border-color: rgba(52, 211, 153, 0.45);
+  box-shadow:
+    0 20px 48px -10px rgba(0, 0, 0, 0.65),
+    0 0 24px -2px rgba(52, 211, 153, 0.25);
+}
+
+[data-theme="light"] .contact-toast.success {
+  border-color: rgba(16, 185, 129, 0.38);
+  box-shadow:
+    0 20px 48px -10px rgba(16, 185, 129, 0.16),
+    0 4px 16px rgba(33, 31, 29, 0.08);
+}
+
+.contact-toast-icon-wrap {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.contact-toast.error .contact-toast-icon-wrap {
+  background: rgba(239, 68, 68, 0.14);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+[data-theme="light"] .contact-toast.error .contact-toast-icon-wrap {
+  background: rgba(220, 38, 38, 0.1);
+  color: #DC2626;
+  border: 1px solid rgba(220, 38, 38, 0.22);
+}
+
+.contact-toast.success .contact-toast-icon-wrap {
+  background: rgba(52, 211, 153, 0.14);
   color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.28);
 }
 
-.form-feedback-alert.error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #F87171;
+[data-theme="light"] .contact-toast.success .contact-toast-icon-wrap {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.contact-toast-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.contact-toast-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #FFFFFF);
+  line-height: 1.3;
+}
+
+[data-theme="light"] .contact-toast-title {
+  color: #111827;
+}
+
+.contact-toast-message {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-secondary, #9CA3AF);
+  margin: 0;
+  word-break: break-word;
+}
+
+[data-theme="light"] .contact-toast-message {
+  color: #4B5563;
+}
+
+.contact-toast-close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #6B7280);
+  cursor: pointer;
+  padding: 0;
+  transition: color 150ms ease, background-color 150ms ease;
+  margin-top: 1px;
+}
+
+.contact-toast-close:hover {
+  color: var(--text-primary, #FFFFFF);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .contact-toast-close:hover {
+  color: #111827;
+  background: rgba(33, 31, 29, 0.06);
+}
+
+@media (max-width: 640px) {
+  .contact-toast-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+  }
+  .contact-toast {
+    min-width: auto;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* ==========================================================================
@@ -528,16 +840,32 @@
 }
 
 /* ==========================================================================
-   4 CONTACT CHANNEL CARDS (Enterprise Senior Architecture Standard)
-   20px Border Radius Standard • Specular Top Rims • Zero Box Clutter
+   EXECUTIVE CONTACT CARDS (Senior Architecture Standard)
+   2*1 Full Height (Corporate Presence) + 2*1 Top/Bottom Stack (Direct Inquiries & Voice/WhatsApp)
    ========================================================================== */
 .contact-cards-grid {
   width: 100%;
-  max-width: 1040px;
+  max-width: 1060px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(14px, 1.8vw, 20px);
+  grid-template-columns: 1.12fr 1fr;
+  gap: clamp(18px, 2.2vw, 24px);
+  align-items: stretch;
   margin-bottom: clamp(64px, 8vh, 96px);
+}
+
+.contact-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.2vw, 24px);
+  height: 100%;
+}
+
+.contact-cards-stack .contact-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(22px, 2.4vw, 28px);
 }
 
 .contact-card {
@@ -545,7 +873,7 @@
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-card, 20px);
-  padding: 24px 20px;
+  padding: clamp(24px, 2.8vw, 32px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -558,6 +886,50 @@
     0 8px 24px -4px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   overflow: hidden;
+}
+
+.contact-card--presence {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: clamp(24px, 2.8vw, 32px);
+}
+
+.presence-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.presence-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.presence-main-val {
+  font-family: var(--font-heading);
+  font-size: clamp(17px, 1.6vw, 19px) !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+[data-theme="light"] .presence-main-val {
+  color: #1A1918;
+}
+
+.presence-lead-desc {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0;
+  letter-spacing: -0.005em;
 }
 
 [data-theme="light"] .contact-card {
@@ -692,57 +1064,156 @@
   margin: 0;
 }
 
-/* Copy Trigger Pill on Email Card */
+/* Professional Action Buttons on Channel Cards (System 8px Standard) */
 .contact-copy-pill {
-  border: none;
-  background: transparent;
-  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
-  color: var(--brand-blue, #A0BBFF);
+  color: var(--text-primary);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  margin-top: 4px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: all 0.22s var(--ease-out);
+  user-select: none;
+  width: fit-content;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* Dual Addresses Layout in Card 3 */
+[data-theme="light"] .contact-copy-pill {
+  background: rgba(33, 31, 29, 0.04);
+  border-color: rgba(33, 31, 29, 0.14);
+  color: #1A1918;
+  box-shadow: inset 0 1px 0 #FFFFFF;
+}
+
+.contact-copy-pill:hover {
+  background: rgba(160, 187, 255, 0.12);
+  border-color: var(--brand-blue, #A0BBFF);
+  color: var(--brand-blue, #A0BBFF);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .contact-copy-pill:hover {
+  background: #211F1D;
+  border-color: #211F1D;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(33, 31, 29, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Dual Addresses Layout in Corporate Presence */
 .contact-dual-addresses {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-  padding-top: 6px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-[data-theme="light"] .contact-dual-addresses {
-  border-top-color: rgba(33, 31, 29, 0.08);
+  gap: 12px;
+  flex: 1;
+  margin-top: 4px;
 }
 
 .contact-sub-addr {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  font-family: var(--font-body);
-  font-size: 11px;
-  line-height: 1.35;
-  color: var(--text-muted);
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md, 12px);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.22s ease;
+}
+
+[data-theme="light"] .contact-sub-addr {
+  background: rgba(33, 31, 29, 0.025);
+  border-color: rgba(33, 31, 29, 0.07);
+}
+
+.contact-sub-addr:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(160, 187, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .contact-sub-addr:hover {
+  background: rgba(33, 31, 29, 0.045);
+  border-color: rgba(33, 31, 29, 0.18);
+  transform: translateY(-1px);
+}
+
+.contact-sub-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-sub-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.contact-addr-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--brand-blue, #A0BBFF);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .contact-addr-icon {
+  color: #3B5CB8;
 }
 
 .contact-sub-tag {
   font-family: var(--font-heading);
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-blue, #A0BBFF);
 }
 
 [data-theme="light"] .contact-sub-tag {
   color: #3B5CB8;
+}
+
+.contact-sub-badge {
+  font-family: var(--font-heading);
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 2.5px 8px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+[data-theme="light"] .contact-sub-badge {
+  background: rgba(33, 31, 29, 0.05);
+  border-color: rgba(33, 31, 29, 0.1);
+  color: #55524E;
+}
+
+.contact-sub-line {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  opacity: 0.9;
+  letter-spacing: -0.01em;
+}
+
+[data-theme="light"] .contact-sub-line {
+  color: #242220;
+  opacity: 0.95;
 }
 
 /* ==========================================================================
@@ -851,9 +1322,11 @@
 /* ==========================================================================
    RESPONSIVE DESIGN (TABLET & MOBILE)
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 860px) {
   .contact-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 56px;
   }
 }
 
@@ -871,12 +1344,6 @@
     padding: 28px 18px;
     border-radius: 16px;
     margin-bottom: 60px;
-  }
-
-  .contact-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    margin-bottom: 56px;
   }
 
 
