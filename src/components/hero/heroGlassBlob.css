@@ -1,42 +1,32 @@
 /* ==========================================================================
-   HERO ZEN ORGANIC GLASS BLOBS — Chill Mode Editorial Edition
-   Inspired by: Japanese stone zen gardens, Apple glass UI, and editorial topography
-   —
-   Each stage features:
-     · Centered frosted translucent glass pebble body
-     · Specular hairline rim capturing key ambient light
-     · 3 concentric organic contour rings ("random circle like")
-     · Desynchronized harmonic breathing (11s–23s primes) for pure serenity
+   HERO GLASS BLOB — DOUBLE-RING EDITORIAL GLASS ART
+   Visual: filled organic glass body + 2 offset freehand oval contour rings
+   Reference: like the hand-drawn blob art with concentric offset strokes
    ========================================================================== */
 
-/* ── Container: centered behind the floating visual element ── */
+/* ── Stage ── */
 .hero-glass-stage-wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 156%;
-  height: 156%;
+  /* Smaller than before — shape leaves clear margin within SVG */
+  width: 136%;
+  height: 136%;
   aspect-ratio: 1 / 1;
   pointer-events: none;
   z-index: 0;
   user-select: none;
 }
 
-/* Left AI Robot visual centering */
-.hero-glass-stage-left {
-  top: 50%;
-  left: 50%;
-}
-
-/* Right Storyboard animation centering */
+.hero-glass-stage-left,
 .hero-glass-stage-right {
   top: 50%;
   left: 50%;
 }
 
-/* ── SVG Root ── */
-.hero-blob-svg {
+/* ── SVG ── */
+.hero-art-svg {
   width: 100%;
   height: 100%;
   display: block;
@@ -44,146 +34,137 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   LAYERS & CHILL-MODE HARMONIC MOTION
-   All elements rotate and breathe from the central pivot (250px 250px)
+   LIGHT MODE — Frosted quartz glass on warm canvas
+   ══════════════════════════════════════════════════════════════════════════ */
+[data-theme="light"] .hero-glass-stage-left,
+[data-theme="light"] .hero-glass-stage-right {
+
+  /* Body gradient — diagonal refraction, top-left light source */
+  --hgb-g0: rgba(255, 255, 255, 0.75);
+  --hgb-g1: rgba(244, 246, 252, 0.52);
+  --hgb-g2: rgba(230, 234, 248, 0.28);
+  --hgb-g3: rgba(212, 218, 242, 0.12);
+  --hgb-g4: rgba(192, 200, 235, 0.04);
+
+  /* Radial inner glow */
+  --hgb-inner-0: rgba(255, 255, 255, 0.60);
+  --hgb-inner-1: rgba(238, 241, 252, 0.22);
+  --hgb-inner-2: rgba(212, 218, 244, 0.04);
+
+  /* Two contour ring strokes — soft charcoal, same tone, barely visible */
+  --hgb-ring-a: rgba(48, 52, 78, 0.20);
+  --hgb-ring-b: rgba(48, 52, 78, 0.16);
+
+  filter:
+    drop-shadow(0 6px 22px rgba(158, 168, 215, 0.14))
+    drop-shadow(0 1px 4px  rgba(195, 205, 240, 0.10));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DARK MODE — Smoked crystal, barely lit
+   ══════════════════════════════════════════════════════════════════════════ */
+:root,
+[data-theme="dark"] .hero-glass-stage-left,
+[data-theme="dark"] .hero-glass-stage-right {
+
+  --hgb-g0: rgba(255, 255, 255, 0.080);
+  --hgb-g1: rgba(218, 228, 255, 0.045);
+  --hgb-g2: rgba(195, 208, 250, 0.024);
+  --hgb-g3: rgba(175, 192, 242, 0.010);
+  --hgb-g4: rgba(155, 174, 232, 0.004);
+
+  --hgb-inner-0: rgba(255, 255, 255, 0.070);
+  --hgb-inner-1: rgba(210, 222, 252, 0.030);
+  --hgb-inner-2: rgba(175, 190, 238, 0.007);
+
+  /* Ring strokes — luminous hairline on dark */
+  --hgb-ring-a: rgba(200, 212, 255, 0.22);
+  --hgb-ring-b: rgba(200, 212, 255, 0.16);
+
+  filter:
+    drop-shadow(0 8px 30px rgba(0, 0, 0, 0.42))
+    drop-shadow(0 2px 6px  rgba(0, 0, 0, 0.22));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS — Layered independent timing for organic parallax depth
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* 0. Ambient Soft Bloom */
-.hero-zen-bloom {
-  transform-origin: 250px 250px;
-  animation: zenBloomPulse 11s ease-in-out infinite alternate;
+/* Ambient aura — slowest */
+.hgb-aura {
+  transform-origin: 220px 220px;
+  animation: hgbAura 22s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
   will-change: transform, opacity;
 }
 
-/* 1 & 2. Frosted Glass Pebble Body & Specular Rim */
-.hero-zen-disc-body,
-.hero-zen-disc-rim {
-  transform-origin: 250px 250px;
-  animation: zenBodyBreathe 13s ease-in-out infinite alternate;
+/* Glass body — core breath */
+.hgb-body {
+  transform-origin: 220px 220px;
+  animation: hgbBody 17s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   will-change: transform;
 }
 
-/* 3. Inner Organic Contour Ring */
-.hero-zen-ring--1 {
-  transform-origin: 250px 250px;
-  animation: zenRingFloat1 15s ease-in-out infinite alternate;
+/* Sheen overlay — synced with body */
+.hgb-sheen {
+  transform-origin: 220px 220px;
+  animation: hgbBody 15s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   will-change: transform;
 }
 
-/* 4. Mid Organic Contour Ring */
-.hero-zen-ring--2 {
-  transform-origin: 250px 250px;
-  animation: zenRingFloat2 19s ease-in-out 0.8s infinite alternate;
+/* Ring A — drifts upper-left independently */
+.hgb-ring-a {
+  transform-origin: 220px 220px;
+  animation: hgbRingA 19s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
   will-change: transform;
 }
 
-/* 5. Outer Organic Contour Ring */
-.hero-zen-ring--3 {
-  transform-origin: 250px 250px;
-  animation: zenRingFloat3 23s ease-in-out 1.6s infinite alternate;
+/* Ring B — drifts lower-right independently, opposite phase */
+.hgb-ring-b {
+  transform-origin: 220px 220px;
+  animation: hgbRingB 21s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
   will-change: transform;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   KEYFRAMES — Delicate, serene, never mechanical or AI-looking
+   KEYFRAMES
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Bloom expands and breathes softly like warm light */
-@keyframes zenBloomPulse {
-  0% {
-    transform: scale(1.00);
-    opacity: 0.85;
-  }
-  100% {
-    transform: scale(1.06);
-    opacity: 0.50;
-  }
+@keyframes hgbAura {
+  0%   { transform: scale(1.000); opacity: 0.45; }
+  100% { transform: scale(1.042); opacity: 0.65; }
 }
 
-/* Frosted glass pebble serene breath */
-@keyframes zenBodyBreathe {
-  0% {
-    transform: scale(1.000);
-  }
-  100% {
-    transform: scale(1.018);
-  }
+@keyframes hgbBody {
+  0%   { transform: scale(1.000); }
+  100% { transform: scale(1.015); }
 }
 
-/* Ring 1: subtle expansion and +1.2deg micro-turn */
-@keyframes zenRingFloat1 {
-  0% {
-    transform: scale(1.000) rotate(0deg);
-  }
-  100% {
-    transform: scale(1.022) rotate(1.2deg);
-  }
+/* Ring A drifts up-left, breathes slightly */
+@keyframes hgbRingA {
+  0%   { transform: translate(0px,  0px)  scale(1.000); }
+  100% { transform: translate(-5px, -4px) scale(1.007); }
 }
 
-/* Ring 2: desynchronized breath and -1.8deg micro-turn */
-@keyframes zenRingFloat2 {
-  0% {
-    transform: scale(1.000) rotate(0deg);
-  }
-  100% {
-    transform: scale(1.028) rotate(-1.8deg);
-  }
-}
-
-/* Ring 3: widest breath and +2.2deg micro-turn */
-@keyframes zenRingFloat3 {
-  0% {
-    transform: scale(1.000) rotate(0deg);
-  }
-  100% {
-    transform: scale(1.035) rotate(2.2deg);
-  }
+/* Ring B drifts down-right, opposite direction */
+@keyframes hgbRingB {
+  0%   { transform: translate(0px, 0px) scale(1.000); }
+  100% { transform: translate(4px, 3px) scale(1.005); }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   DARK THEME TUNING
-   ══════════════════════════════════════════════════════════════════════════ */
-[data-theme="dark"] .hero-zen-bloom {
-  opacity: 0.70;
-}
-
-[data-theme="dark"] .hero-zen-disc-body {
-  opacity: 0.65;
-}
-
-[data-theme="dark"] .hero-zen-disc-rim {
-  opacity: 0.50;
-}
-
-[data-theme="dark"] .hero-zen-ring {
-  opacity: 0.75;
-}
-
-/* ══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE SCALING
+   RESPONSIVE
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1400px) and (min-width: 1024px) {
-  .hero-glass-stage-wrapper {
-    width: 150%;
-    height: 150%;
-  }
+  .hero-glass-stage-wrapper { width: 132%; height: 132%; }
 }
-
 @media (max-width: 1023px) {
-  .hero-glass-stage-wrapper {
-    width: 142%;
-    height: 142%;
-  }
+  .hero-glass-stage-wrapper { width: 124%; height: 124%; }
 }
 
-/* Respect user's accessibility preferences */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .hero-zen-bloom,
-  .hero-zen-disc-body,
-  .hero-zen-disc-rim,
-  .hero-zen-ring--1,
-  .hero-zen-ring--2,
-  .hero-zen-ring--3 {
+  .hgb-aura, .hgb-body, .hgb-sheen,
+  .hgb-ring-a, .hgb-ring-b {
     animation: none !important;
   }
 }

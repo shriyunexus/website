@@ -406,11 +406,22 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Bold 2-Line Solid Headline */}
+          {/* Bold Responsive Headline */}
           <h1 className="hero-headline" ref={headlineRef}>
             <span className="headline-line">Technology Built</span>
-            <span className="headline-line">Around Your Business</span>
+            <span className="headline-line">
+              <span className="headline-part">Around Your</span>
+              <span className="headline-part">Business</span>
+            </span>
           </h1>
+
+          {/* Mobile-only: Right-sided interactive visual composition below headline */}
+          <div className="hero-mobile-visual-container" aria-label="Interactive Capabilities Visual">
+            <div className="hero-mobile-visual-stage">
+              <HeroGlassBlob variant="right" />
+              <HeroAnimation2 />
+            </div>
+          </div>
         </div>
       </div>
 

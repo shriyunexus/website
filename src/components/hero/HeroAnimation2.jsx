@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import './heroStoryboard.css';
 
@@ -23,6 +23,8 @@ function springOvershoot(x) {
 export default function HeroAnimation2() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const reactId = useId();
+  const gradId = `shGrad-${reactId.replace(/[:]/g, '')}`;
 
   const [time, setTime] = useState(0);
   const startTimeRef = useRef(null);
@@ -174,7 +176,7 @@ export default function HeroAnimation2() {
         <svg viewBox="0 0 500 500" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             {/* Theme Signature Gradient: Brand Blue (#A0BBFF) to Brand Terracotta (#cf6733) */}
-            <linearGradient id="shGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#A0BBFF" />
               <stop offset="100%" stopColor="#cf6733" />
             </linearGradient>
@@ -242,7 +244,7 @@ export default function HeroAnimation2() {
                 x="250"
                 y="250"
                 fill="#0F1012"
-                fontSize="20.5"
+                fontSize="23"
                 fontWeight="700"
                 letterSpacing="-0.02em"
                 textAnchor="middle"
@@ -398,7 +400,7 @@ export default function HeroAnimation2() {
               >
                 <path
                   d="M295,120 L360,150 C360,150 368,230 295,285 C222,230 230,150 230,150 L295,120 Z"
-                  fill="url(#shGrad)"
+                  fill={`url(#${gradId})`}
                   stroke={isLight ? "#0F1012" : "#F7F4EF"}
                   strokeWidth="7"
                   strokeLinejoin="round"
