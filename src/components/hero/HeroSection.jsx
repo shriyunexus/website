@@ -2,6 +2,7 @@ import { useRef, useEffect, useCallback } from 'react';
 import AIRobotCompanion from './AIRobotCompanion';
 import HeroAnimation2 from './HeroAnimation2';
 import HeroGlassOrbitals from './HeroGlassOrbitals';
+import HeroGlassBlob from './HeroGlassBlob';
 import './hero.css';
 
 export default function HeroSection() {
@@ -383,11 +384,13 @@ export default function HeroSection() {
         <div className="hero-floating-visuals-row">
           {/* Left Floating Visuals */}
           <div className="hero-robot-floating-left" ref={robotRef}>
+            <HeroGlassBlob variant="left" />
             <AIRobotCompanion />
           </div>
 
           {/* Right Floating Visuals */}
           <div className="hero-anim-floating-right" ref={rightAnimRef}>
+            <HeroGlassBlob variant="right" />
             <HeroAnimation2 />
           </div>
         </div>

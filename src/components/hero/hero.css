@@ -63,11 +63,12 @@
    -------------------------------------------------------------------------- */
 .hero-robot-floating-left {
   position: absolute;
-  top: 52%;
+  top: 50%;
   transform: translateY(-50%);
-  left: max(32px, calc(50% - min(44vw, 760px)));
-  width: clamp(240px, 15vw, 300px);
-  height: clamp(240px, 15vw, 300px);
+  margin-top: clamp(16px, 2.5vh, 28px);
+  left: max(28px, calc(50% - min(46vw, 860px)));
+  width: clamp(255px, 16.5vw, 330px);
+  height: clamp(255px, 16.5vw, 330px);
   z-index: 10;
   pointer-events: auto;
   animation: robotFloat 6s ease-in-out infinite alternate;
@@ -86,6 +87,7 @@
 
 .ai-robot-companion-wrap {
   position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
   display: flex;
@@ -94,7 +96,12 @@
   justify-content: center;
   user-select: none;
   cursor: pointer;
-  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.14));
+  transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] .ai-robot-companion-wrap {
+  filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.40));
 }
 
 .ai-robot-head-transform {
@@ -117,11 +124,12 @@
    -------------------------------------------------------------------------- */
 .hero-anim-floating-right {
   position: absolute;
-  top: 52%;
+  top: 50%;
   transform: translateY(-50%);
-  right: max(32px, calc(50% - min(44vw, 760px)));
-  width: clamp(240px, 15vw, 300px);
-  height: clamp(240px, 15vw, 300px);
+  margin-top: clamp(16px, 2.5vh, 28px);
+  right: max(28px, calc(50% - min(46vw, 860px)));
+  width: clamp(255px, 16.5vw, 330px);
+  height: clamp(255px, 16.5vw, 330px);
   z-index: 10;
   pointer-events: auto;
   animation: heroAnimRightFloat 6s ease-in-out 1s infinite alternate;
@@ -261,11 +269,11 @@
   position: relative;
   z-index: 1;
   font-family: var(--font-heading);
-  font-size: clamp(38px, 4.4vw, 68px);
+  font-size: clamp(40px, 4.4vw, 70px);
   font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.022em;
-  color: #FFFFFF;
+  line-height: 1.07;
+  letter-spacing: -0.024em;
+  color: var(--text-primary, #FFFFFF);
   margin-bottom: 0px;
   display: flex;
   flex-direction: column;
@@ -275,7 +283,7 @@
 }
 
 [data-theme="light"] .hero-headline {
-  color: #16181D;
+  color: var(--text-primary, #211F1D);
 }
 
 .headline-line {
@@ -470,14 +478,28 @@
   }
 
   .hero-center-stage {
-    width: min(50vw, 800px);
-    max-width: 50vw;
+    width: min(52vw, 880px);
+    max-width: 54vw;
   }
 
   .hero-headline {
-    font-size: clamp(48px, 4.4vw, 70px);
+    font-size: clamp(48px, 4.4vw, 72px);
     line-height: 1.06;
     font-weight: 600;
+  }
+
+  .hero-robot-floating-left {
+    left: max(32px, calc(50% - min(46vw, 900px)));
+    margin-top: 24px;
+    width: clamp(270px, 17vw, 340px);
+    height: clamp(270px, 17vw, 340px);
+  }
+
+  .hero-anim-floating-right {
+    right: max(32px, calc(50% - min(46vw, 900px)));
+    margin-top: 24px;
+    width: clamp(270px, 17vw, 340px);
+    height: clamp(270px, 17vw, 340px);
   }
 
   .hero-tablet-scroll-stage {
@@ -509,12 +531,12 @@
   }
 
   .hero-center-stage {
-    width: min(50vw, 1000px);
-    max-width: 50vw;
+    width: min(54vw, 1040px);
+    max-width: 54vw;
   }
 
   .hero-headline {
-    font-size: clamp(56px, 4.3vw, 86px);
+    font-size: clamp(56px, 4.2vw, 84px);
     line-height: 1.05;
     font-weight: 600;
   }
@@ -525,20 +547,22 @@
   }
 
   .hero-tablet-showcase {
-    width: min(50vw, 1000px);
-    max-width: 50vw;
+    width: min(54vw, 1040px);
+    max-width: 54vw;
   }
 
   .hero-robot-floating-left {
-    left: max(40px, calc(50% - min(46vw, 960px)));
-    width: 330px;
-    height: 330px;
+    left: max(40px, calc(50% - min(46vw, 1000px)));
+    margin-top: 28px;
+    width: 350px;
+    height: 350px;
   }
 
   .hero-anim-floating-right {
-    right: max(40px, calc(50% - min(46vw, 960px)));
-    width: 330px;
-    height: 330px;
+    right: max(40px, calc(50% - min(46vw, 1000px)));
+    margin-top: 28px;
+    width: 350px;
+    height: 350px;
   }
 }
 
@@ -552,24 +576,27 @@
   }
 
   .hero-robot-floating-left {
-    left: max(20px, calc(50% - 600px));
-    width: 220px;
-    height: 220px;
+    left: max(16px, calc(50% - min(47vw, 680px)));
+    margin-top: 20px;
+    width: clamp(235px, 16vw, 285px);
+    height: clamp(235px, 16vw, 285px);
   }
 
   .hero-anim-floating-right {
-    right: max(20px, calc(50% - 600px));
-    width: 220px;
-    height: 220px;
+    right: max(16px, calc(50% - min(47vw, 680px)));
+    margin-top: 20px;
+    width: clamp(235px, 16vw, 285px);
+    height: clamp(235px, 16vw, 285px);
   }
 
   .hero-center-stage {
-    width: min(50vw, 800px);
-    max-width: 50vw;
+    width: min(54vw, 860px);
+    max-width: 54vw;
   }
 
   .hero-headline {
-    font-size: clamp(34px, 4.2vw, 56px);
+    font-size: clamp(40px, 4.2vw, 58px);
+    line-height: 1.07;
     font-weight: 600;
   }
 }
@@ -590,25 +617,28 @@
 
   .hero-robot-floating-left {
     left: 10px;
-    width: 170px;
-    height: 170px;
-    opacity: 0.9;
+    margin-top: 16px;
+    width: clamp(180px, 19vw, 215px);
+    height: clamp(180px, 19vw, 215px);
+    opacity: 0.95;
   }
 
   .hero-anim-floating-right {
     right: 10px;
-    width: 170px;
-    height: 170px;
-    opacity: 0.9;
+    margin-top: 16px;
+    width: clamp(180px, 19vw, 215px);
+    height: clamp(180px, 19vw, 215px);
+    opacity: 0.95;
   }
 
   .hero-center-stage {
-    width: min(60vw, 640px);
-    max-width: 60vw;
+    width: min(62vw, 660px);
+    max-width: 62vw;
   }
 
   .hero-headline {
-    font-size: clamp(28px, 4.4vw, 46px);
+    font-size: clamp(30px, 4.4vw, 46px);
+    line-height: 1.08;
     font-weight: 600;
   }
 
@@ -617,8 +647,8 @@
   }
 
   .hero-tablet-showcase {
-    width: min(60vw, 640px);
-    max-width: 60vw;
+    width: min(62vw, 660px);
+    max-width: 62vw;
   }
 }
 

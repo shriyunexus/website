@@ -266,7 +266,7 @@ export default function HeroAnimation2() {
               SCENE 2 (5.4s - 7.2s): AI CARD ("Get smart AI guided suggestions")
               ================================================================ */}
           {isScene2 && (
-            <g>
+            <g style={{ filter: isLight ? 'drop-shadow(0 14px 28px rgba(0, 0, 0, 0.07))' : 'drop-shadow(0 18px 36px rgba(0, 0, 0, 0.40))' }}>
               <rect
                 x="60"
                 y="60"
