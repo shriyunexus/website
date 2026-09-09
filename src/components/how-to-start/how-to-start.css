@@ -232,6 +232,21 @@
   text-wrap: balance;
 }
 
+.start-hero-header .reveal-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.start-hero-header .reveal-space {
+  display: inline-block;
+}
+
+.start-hero-header .reveal-char {
+  display: inline-block;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
 /* ==========================================================================
    EXACT REFERENCE 3-CARD DECISION PATH (Chamfer Cut Corner & Inter-Card Conduits)
    ========================================================================== */

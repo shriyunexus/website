@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const ThemeContext = createContext({
-  theme: 'dark',
+  theme: 'light',
   toggleTheme: () => {},
   setTheme: () => {},
 });
@@ -10,14 +10,13 @@ const STORAGE_KEY = 'shriyu_theme_preference';
 
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
-    if (typeof window === 'undefined') return 'dark';
+    if (typeof window === 'undefined') return 'light';
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved === 'dark' || saved === 'light') return saved;
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'light';
+      return 'light';
     } catch {
-      return 'dark';
+      return 'light';
     }
   });
 
@@ -40,23 +39,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     // Ensure data-theme is synchronized on mount
     document.documentElement.setAttribute('data-theme', theme);
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemChange = (e) => {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        // Only update if user hasn't explicitly set a preference
-        if (!saved) {
-          applyTheme(e.matches ? 'dark' : 'light');
-        }
-      } catch {
-        // no-op
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
-  }, [theme, applyTheme]);
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme: applyTheme }}>

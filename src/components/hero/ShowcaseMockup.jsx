@@ -142,7 +142,7 @@ export default function ShowcaseMockup({ scrollProgress: p = 0 }) {
         >
           {/* VIDEO: placed directly — border-radius collapses to 0 as it fills screen */}
           <video
-            src="/showreel-home.mp4"
+            src="/assets/hero/hero-tablet-video.mp4"
             autoPlay
             loop
             muted

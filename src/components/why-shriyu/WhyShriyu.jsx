@@ -41,6 +41,18 @@ const principles = [
   },
 ];
 
+const renderRevealText = (text) =>
+  text.split(' ').map((word, wordIdx, arr) => (
+    <span key={wordIdx} className="reveal-word">
+      {word.split('').map((char, charIdx) => (
+        <span key={charIdx} className="reveal-char">
+          {char}
+        </span>
+      ))}
+      {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
+    </span>
+  ));
+
 export default function WhyShriyu() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
@@ -78,20 +90,25 @@ export default function WhyShriyu() {
         );
       }
 
-      // 2. Supporting Subhead Reveal (Clean block fade, no scrub)
-      if (subheadRef.current) {
+      // 2. Supporting Subhead Character Scrub Reveal (Exact same continuous standard as headline)
+      const subheadChars = subheadRef.current
+        ? Array.from(subheadRef.current.querySelectorAll('.reveal-char'))
+        : [];
+
+      if (subheadChars.length > 0) {
         gsap.fromTo(
-          subheadRef.current,
-          { opacity: 0, y: 16 },
+          subheadChars,
+          { opacity: 0, y: 8 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: 'power2.out',
+            stagger: 0.008,
+            ease: 'power1.out',
             scrollTrigger: {
               trigger: subheadRef.current,
-              start: 'top 86%',
-              toggleActions: 'play none none none',
+              start: 'top 88%',
+              end: 'bottom 60%',
+              scrub: 0.4,
             },
           }
         );
@@ -162,34 +179,17 @@ export default function WhyShriyu() {
 
           <h2 className="why-headline" ref={headlineRef}>
             <span className="why-headline-line">
-              {"We Don't Build More.".split(' ').map((word, wordIdx, arr) => (
-                <span key={wordIdx} className="reveal-word">
-                  {word.split('').map((char, charIdx) => (
-                    <span key={charIdx} className="reveal-char">
-                      {char}
-                    </span>
-                  ))}
-                  {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
-                </span>
-              ))}
+              {renderRevealText("We Don't Build More.")}
             </span>
             <span className="why-headline-line">
-              {"We Build What Matters.".split(' ').map((word, wordIdx, arr) => (
-                <span key={wordIdx} className="reveal-word">
-                  {word.split('').map((char, charIdx) => (
-                    <span key={charIdx} className="reveal-char">
-                      {char}
-                    </span>
-                  ))}
-                  {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
-                </span>
-              ))}
+              {renderRevealText("We Build What Matters.")}
             </span>
           </h2>
 
           <p className="why-subhead" ref={subheadRef}>
-            The most expensive software isn't always the most complex.
-            Sometimes, it's the software your business never needed in the first place.
+            {renderRevealText(
+              "The most expensive software isn't always the most complex. Sometimes, it's the software your business never needed in the first place."
+            )}
           </p>
         </div>
 

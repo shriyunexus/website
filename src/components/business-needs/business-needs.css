@@ -234,11 +234,6 @@
   will-change: opacity, transform, filter;
 }
 
-.needs-subhead .reveal-word {
-  opacity: 0;
-  will-change: opacity, transform, filter;
-}
-
 /* ==========================================================================
    4-DOOR EQUIDISTANT GRID
    ========================================================================== */

@@ -40,35 +40,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   DARK THEME (Default)
+   LIGHT THEME (Primary Default)
    -------------------------------------------------------------------------- */
-[data-theme="dark"] {
-  --bg-base: #0F1012;
-  --bg-surface: #191A1D;
-  --bg-elevated: #282624;
-
-  --brand-blue: #A0BBFF;
-  --accent-primary: #CF6733;
-  --accent-highlight: #F6D6CD;
-
-  --text-primary: #F7F4EF;
-  --text-muted: #9E9C98;
-
-  /* Composite Theme Tokens */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-elevated: rgba(255, 255, 255, 0.14);
-  --nav-pill-bg: rgba(25, 26, 29, 0.84);
-  --nav-pill-scrolled-bg: rgba(18, 19, 22, 0.94);
-  --nav-dropdown-bg: #191A1D;
-  --nav-card-hover: rgba(255, 255, 255, 0.05);
-  --shadow-nav: 0 16px 36px rgba(0, 0, 0, 0.45);
-  --shadow-dropdown: 0 20px 48px rgba(0, 0, 0, 0.65);
-  --backdrop-filter: blur(24px) saturate(180%);
-}
-
-/* --------------------------------------------------------------------------
-   LIGHT THEME
-   -------------------------------------------------------------------------- */
+:root,
 [data-theme="light"] {
   --bg-base: #F7F4EF;
   --bg-surface: #E8DFD3;
@@ -94,6 +68,33 @@
   --backdrop-filter: blur(20px);
 }
 
+/* --------------------------------------------------------------------------
+   DARK THEME (Alternative)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  --bg-base: #0F1012;
+  --bg-surface: #191A1D;
+  --bg-elevated: #282624;
+
+  --brand-blue: #A0BBFF;
+  --accent-primary: #CF6733;
+  --accent-highlight: #F6D6CD;
+
+  --text-primary: #F7F4EF;
+  --text-muted: #9E9C98;
+
+  /* Composite Theme Tokens */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-elevated: rgba(255, 255, 255, 0.14);
+  --nav-pill-bg: rgba(25, 26, 29, 0.84);
+  --nav-pill-scrolled-bg: rgba(18, 19, 22, 0.94);
+  --nav-dropdown-bg: #191A1D;
+  --nav-card-hover: rgba(255, 255, 255, 0.05);
+  --shadow-nav: 0 16px 36px rgba(0, 0, 0, 0.45);
+  --shadow-dropdown: 0 20px 48px rgba(0, 0, 0, 0.65);
+  --backdrop-filter: blur(24px) saturate(180%);
+}
+
 /* Global Reset & Base Typography */
 *,
 *::before,
@@ -115,6 +116,12 @@ html {
   max-width: 100%;
   transition: background-color var(--motion-standard) var(--ease-out),
     color var(--motion-standard) var(--ease-out);
+}
+
+/* Neutralize any transition flicker during preloading */
+html[data-preloading="true"],
+html[data-preloading="true"] * {
+  transition: none !important;
 }
 
 body {

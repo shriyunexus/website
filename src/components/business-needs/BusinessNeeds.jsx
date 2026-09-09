@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './business-needs.css';
@@ -66,6 +66,49 @@ const businessNeeds = [
   },
 ];
 
+const renderRevealText = (text) =>
+  text.split(' ').map((word, wordIdx, arr) => (
+    <span key={wordIdx} className="reveal-word">
+      {word.split('').map((char, charIdx) => (
+        <span key={charIdx} className="reveal-char">
+          {char}
+        </span>
+      ))}
+      {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
+    </span>
+  ));
+
+const NeedsHeader = memo(function NeedsHeader({ eyebrowRef, headingH2Ref, subheadRef }) {
+  return (
+    <>
+      {/* ── Eyebrow Badge (Website Theme Continuous Standard) ────────── */}
+      <div className="needs-eyebrow-container" ref={eyebrowRef}>
+        <div className="needs-eyebrow-badge">
+          <span className="needs-eyebrow-text">WHERE WE MEET YOU</span>
+          <span className="needs-eyebrow-divider" aria-hidden="true" />
+          <span className="needs-eyebrow-sequence" aria-hidden="true">
+            <span className="seq-dot s-1" />
+            <span className="seq-dot s-2" />
+            <span className="seq-dot s-3" />
+            <span className="seq-dot s-4" />
+          </span>
+        </div>
+      </div>
+
+      {/* ── Header & Subhead ───────────────────────────────────────── */}
+      <h2 className="needs-heading" ref={headingH2Ref}>
+        {renderRevealText('What Does Your Business Need Next?')}
+      </h2>
+
+      <p className="needs-subhead" ref={subheadRef}>
+        {renderRevealText(
+          'Every business reaches a different point where technology needs to catch up. Start with the one that feels closest to where you are.'
+        )}
+      </p>
+    </>
+  );
+});
+
 export default function BusinessNeeds({ onSelectNeed }) {
   const sectionRef = useRef(null);
   const eyebrowRef = useRef(null);
@@ -94,20 +137,6 @@ export default function BusinessNeeds({ onSelectNeed }) {
     if (prefersReduced) {
       hasGlobalTyped = true;
       setTypedText(businessNeeds.map((n) => n.titleSuffix));
-      if (headingH2Ref.current) {
-        headingH2Ref.current.querySelectorAll('.reveal-char').forEach((el) => {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-          el.style.filter = 'none';
-        });
-      }
-      if (subheadRef.current) {
-        subheadRef.current.querySelectorAll('.reveal-word, .reveal-char').forEach((el) => {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
-          el.style.filter = 'none';
-        });
-      }
       return;
     }
 
@@ -125,10 +154,9 @@ export default function BusinessNeeds({ onSelectNeed }) {
 
       const step = () => {
         if (cardIdx >= suffixes.length) {
-          // Finished all 4 cards!
           hasGlobalTyped = true;
           isRunningTypingRef.current = false;
-          setTypedText([...suffixes]); // Lock permanently
+          setTypedText([...suffixes]);
           setTimeout(() => {
             setActiveCursorIndex(-1);
           }, 350);
@@ -138,32 +166,28 @@ export default function BusinessNeeds({ onSelectNeed }) {
         const targetWord = suffixes[cardIdx];
 
         if (charIdx < targetWord.length) {
-          charIdx++;
-          currentAccumulator[cardIdx] = targetWord.slice(0, charIdx);
+          currentAccumulator[cardIdx] = targetWord.slice(0, charIdx + 1);
           setTypedText([...currentAccumulator]);
-          // Deliberate, focused keystroke cadence (~72ms)
-          setTimeout(step, 72);
+          charIdx++;
+          setTimeout(step, 45);
         } else {
-          // Word completed on current card!
+          // Completed one word
           cardIdx++;
           charIdx = 0;
-
           if (cardIdx < suffixes.length) {
             setActiveCursorIndex(cardIdx);
-            // Cognitive pause between cards (~240ms)
-            setTimeout(step, 240);
+            setTimeout(step, 180);
           } else {
-            setTimeout(step, 80);
+            step();
           }
         }
       };
 
-      // Deliberate pause after bottom of card is achieved so user registers "Something "
-      setTimeout(step, 280);
+      step();
     };
 
     const ctx = gsap.context(() => {
-      // 0. Eyebrow Badge Soft Float-In
+      // 0. Eyebrow Badge Subtle Rise
       if (eyebrowRef.current) {
         gsap.fromTo(
           eyebrowRef.current,
@@ -182,7 +206,7 @@ export default function BusinessNeeds({ onSelectNeed }) {
         );
       }
 
-      // 1a. Heading Cinematic Character Cascade Reveal (blur-to-focus & rise)
+      // 1a. Heading Cinematic Character Scrub Reveal
       const h2Chars = headingH2Ref.current
         ? Array.from(headingH2Ref.current.querySelectorAll('.reveal-char'))
         : [];
@@ -192,50 +216,45 @@ export default function BusinessNeeds({ onSelectNeed }) {
           h2Chars,
           {
             opacity: 0,
-            y: 18,
-            filter: 'blur(6px)',
+            y: 8,
           },
           {
             opacity: 1,
             y: 0,
-            filter: 'blur(0px)',
-            duration: 0.75,
-            stagger: 0.016,
-            ease: 'power3.out',
+            stagger: 0.012,
+            ease: 'power1.out',
             scrollTrigger: {
               trigger: headingH2Ref.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
+              start: 'top 88%',
+              end: 'bottom 58%',
+              scrub: 0.4,
             },
           }
         );
       }
 
-      // 1b. Subheading Word-by-Word Smooth Cascade Reveal
-      const subheadWords = subheadRef.current
-        ? Array.from(subheadRef.current.querySelectorAll('.reveal-word'))
+      // 1b. Subheading Character Scrub Reveal (Matches Continuous Standard)
+      const subheadChars = subheadRef.current
+        ? Array.from(subheadRef.current.querySelectorAll('.reveal-char'))
         : [];
 
-      if (subheadWords.length > 0) {
+      if (subheadChars.length > 0) {
         gsap.fromTo(
-          subheadWords,
+          subheadChars,
           {
             opacity: 0,
-            y: 12,
-            filter: 'blur(4px)',
+            y: 8,
           },
           {
             opacity: 1,
             y: 0,
-            filter: 'blur(0px)',
-            duration: 0.65,
-            stagger: 0.024,
-            delay: 0.2,
-            ease: 'power2.out',
+            stagger: 0.008,
+            ease: 'power1.out',
             scrollTrigger: {
               trigger: subheadRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
+              start: 'top 88%',
+              end: 'bottom 60%',
+              scrub: 0.4,
             },
           }
         );
@@ -338,48 +357,12 @@ export default function BusinessNeeds({ onSelectNeed }) {
       <div className="needs-ambient-glow" aria-hidden="true" />
 
       <div className="needs-container">
-        {/* ── Eyebrow Badge ──────────────────────────────────────────── */}
-        <div className="needs-eyebrow-container" ref={eyebrowRef}>
-          <div className="needs-eyebrow-badge">
-            <span className="needs-eyebrow-text">WHERE WE MEET YOU</span>
-            <span className="needs-eyebrow-divider" aria-hidden="true" />
-            <span className="needs-eyebrow-sequence" aria-hidden="true">
-              <span className="seq-dot s-1" />
-              <span className="seq-dot s-2" />
-              <span className="seq-dot s-3" />
-              <span className="seq-dot s-4" />
-            </span>
-          </div>
-        </div>
-
-        {/* ── Header & Subhead ───────────────────────────────────────── */}
-        <h2 className="needs-heading" ref={headingH2Ref}>
-          {'What Does Your Business Need Next?'.split(' ').map((word, wordIdx, arr) => (
-            <span key={wordIdx} className="reveal-word">
-              {word.split('').map((char, charIdx) => (
-                <span key={charIdx} className="reveal-char">
-                  {char}
-                </span>
-              ))}
-              {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
-            </span>
-          ))}
-        </h2>
-
-        <p className="needs-subhead" ref={subheadRef}>
-          {'Every business reaches a different point where technology needs to catch up. Start with the one that feels closest to where you are.'
-            .split(' ')
-            .map((word, wordIdx, arr) => (
-              <span key={wordIdx} className="reveal-word">
-                {word.split('').map((char, charIdx) => (
-                  <span key={charIdx} className="reveal-char">
-                    {char}
-                  </span>
-                ))}
-                {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
-              </span>
-            ))}
-        </p>
+        {/* ── Section Header (Memoized to isolate from typewriter re-renders) ── */}
+        <NeedsHeader
+          eyebrowRef={eyebrowRef}
+          headingH2Ref={headingH2Ref}
+          subheadRef={subheadRef}
+        />
 
         {/* ── 4-Door Interactive Matrix ──────────────────────────────── */}
         <div className="needs-grid">

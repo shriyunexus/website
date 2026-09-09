@@ -164,6 +164,18 @@ function StageIcon({ stepNum }) {
   );
 }
 
+const renderRevealText = (text) =>
+  text.split(' ').map((word, wordIdx, arr) => (
+    <span key={wordIdx} className="reveal-word">
+      {word.split('').map((char, charIdx) => (
+        <span key={charIdx} className="reveal-char">
+          {char}
+        </span>
+      ))}
+      {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
+    </span>
+  ));
+
 export default function HowToStart({ onOpenModal }) {
   const sectionRef = useRef(null);
   const headlineRef = useRef(null);
@@ -201,20 +213,25 @@ export default function HowToStart({ onOpenModal }) {
         );
       }
 
-      // 2. Supporting Lead Block Reveal (Plain fade, zero character scrub)
-      if (leadRef.current) {
+      // 2. Supporting Lead Character Scrub Reveal (Exact same continuous standard as headline)
+      const leadChars = leadRef.current
+        ? Array.from(leadRef.current.querySelectorAll('.reveal-char'))
+        : [];
+
+      if (leadChars.length > 0) {
         gsap.fromTo(
-          leadRef.current,
-          { opacity: 0, y: 16 },
+          leadChars,
+          { opacity: 0, y: 8 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: 'power2.out',
+            stagger: 0.008,
+            ease: 'power1.out',
             scrollTrigger: {
               trigger: leadRef.current,
-              start: 'top 86%',
-              toggleActions: 'play none none none',
+              start: 'top 88%',
+              end: 'bottom 58%',
+              scrub: 0.4,
             },
           }
         );
@@ -336,21 +353,13 @@ export default function HowToStart({ onOpenModal }) {
         {/* ── Hero Positioning Header ─────────────────────────────────── */}
         <div className="start-hero-header">
           <h2 className="start-headline" ref={headlineRef}>
-            {"Bring Us the Problem. We'll Find the Opportunity.".split(' ').map((word, wordIdx, arr) => (
-              <span key={wordIdx} className="reveal-word">
-                {word.split('').map((char, charIdx) => (
-                  <span key={charIdx} className="reveal-char">
-                    {char}
-                  </span>
-                ))}
-                {wordIdx < arr.length - 1 && <span className="reveal-space">&nbsp;</span>}
-              </span>
-            ))}
+            {renderRevealText("Bring Us the Problem. We'll Find the Opportunity.")}
           </h2>
 
           <p className="start-lead-context" ref={leadRef}>
-            You don't need a finished brief, a technical specification, or even the right answer yet.
-            Tell us what's not working, what's changing, or what you're trying to achieve.
+            {renderRevealText(
+              "You don't need a finished brief, a technical specification, or even the right answer yet. Tell us what's not working, what's changing, or what you're trying to achieve."
+            )}
           </p>
         </div>
 

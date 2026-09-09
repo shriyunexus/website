@@ -448,7 +448,7 @@ export default function HeroSection() {
                     preload="auto"
                     disablePictureInPicture
                     disableRemotePlayback
-                    src="/hero-showcase.mp4"
+                    src="/assets/hero/hero-tablet-video.mp4"
                     aria-label="Product UI Showcase"
                   />
 

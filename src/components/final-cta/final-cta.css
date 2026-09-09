@@ -429,8 +429,8 @@
 .final-footer-content {
   width: 100%;
   display: grid;
-  grid-template-columns: 1.75fr 1fr 1.15fr 1.1fr;
-  gap: clamp(32px, 4vw, 56px);
+  grid-template-columns: 1.6fr 0.95fr 1.15fr 0.95fr;
+  gap: clamp(24px, 3.2vw, 48px);
   margin-bottom: clamp(40px, 5vh, 56px);
 }
 
@@ -590,72 +590,56 @@
   transform: translateY(0) scale(0.95);
 }
 
-/* Executive Physical Hubs Card (Positioned directly below social icons) */
+/* Executive Physical Hubs (Clean, seamless out-of-box presentation below social icons) */
 .footer-offices-card {
   width: 100%;
   max-width: 320px;
-  margin-top: 6px;
-  padding: 12px 14px;
-  border-radius: var(--radius-card, 20px);
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  margin-top: 14px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  gap: 11px;
 }
 
 [data-theme="light"] .footer-offices-card {
-  background: rgba(33, 31, 29, 0.025);
-  border-color: rgba(33, 31, 29, 0.08);
-  box-shadow:
-    0 2px 8px rgba(33, 31, 29, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-.footer-offices-card:hover {
-  border-color: rgba(160, 187, 255, 0.25);
-}
-
+.footer-offices-card:hover,
 [data-theme="light"] .footer-offices-card:hover {
-  border-color: rgba(59, 92, 184, 0.25);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .footer-office-row {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 9px;
 }
 
-.footer-office-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.footer-office-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
   color: var(--brand-blue, #A0BBFF);
 }
 
-[data-theme="light"] .footer-office-badge {
+[data-theme="light"] .footer-office-icon {
   color: #3b5cb8;
 }
 
-.footer-office-badge svg {
-  width: 12px;
-  height: 12px;
-  flex-shrink: 0;
-  color: currentColor;
-}
-
 .footer-office-address {
+  flex: 1;
   margin: 0;
   font-size: 11.5px;
-  line-height: 1.48;
+  line-height: 1.5;
   color: var(--text-muted);
   letter-spacing: -0.005em;
 }
@@ -665,13 +649,7 @@
 }
 
 .footer-office-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-[data-theme="light"] .footer-office-divider {
-  background: rgba(33, 31, 29, 0.06);
+  display: none;
 }
 
 @media (max-width: 767px) {
