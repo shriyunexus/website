@@ -1,24 +1,114 @@
-# Logs
-logs
+# ==============================================================================
+# PROFESSIONAL PRODUCTION .GITIGNORE
+# Architecture: Vite + React 19 + GSAP + Modern Web Application
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. DEPENDENCIES & PACKAGE MANAGERS
+# Never commit installed vendor packages or local lockfile stores.
+# ------------------------------------------------------------------------------
+node_modules/
+/.pnp
+.pnp.js
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store/
+
+# ------------------------------------------------------------------------------
+# 2. PRODUCTION & BUILD OUTPUTS
+# Generated compiled bundles, chunk assets, and SSR artifacts.
+# ------------------------------------------------------------------------------
+dist/
+dist-ssr/
+build/
+out/
+*.tsbuildinfo
+
+# ------------------------------------------------------------------------------
+# 3. ENVIRONMENT CONFIGURATIONS & SECRETS
+# Strictly guard credentials, API tokens, and local developer overrides.
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# ------------------------------------------------------------------------------
+# 4. LOGS, RUNTIME CACHES & DIAGNOSTICS
+# Execution dumps, package manager logs, and compiler caches.
+# ------------------------------------------------------------------------------
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.vite/
+.turbo/
+.cache/
+.eslintcache
+.stylelintcache
 
-node_modules
-dist
-dist-ssr
-*.local
+# ------------------------------------------------------------------------------
+# 5. CODE TESTING & QUALITY REPORTS
+# Coverage matrices, browser recording traces, and test artifacts.
+# ------------------------------------------------------------------------------
+coverage/
+.nyc_output/
+playwright-report/
+blob-report/
+test-results/
 
-# Editor directories and files
+# ------------------------------------------------------------------------------
+# 6. IDE, WORKSPACE & EDITOR ARTIFACTS
+# Prevent local machine configs from polluting the shared team repository.
+# ------------------------------------------------------------------------------
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+.fleet/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*~
+*.bak
+
+# ------------------------------------------------------------------------------
+# 7. OPERATING SYSTEM ARTIFACTS
+# Metadata, thumb caches, and hidden system indexes (macOS, Windows, Linux).
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+[Dd]esktop.ini
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+$RECYCLE.BIN/
+
+# ------------------------------------------------------------------------------
+# 8. LOCAL MEDIA / SCREEN RECORDINGS SCRATCHPAD
+# Exclude raw desktop recordings and scratch watermark video tests
+# (Preserves official assets in public/hero-showcase.mp4, logo/, and assets/).
+# ------------------------------------------------------------------------------
+public/recording.mp4
+public/*reference*.mp4
+public/*watermark*.mp4

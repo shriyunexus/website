@@ -1,0 +1,241 @@
+<svg viewBox="0 0 500 500" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap');
+      
+      .hero-svg-root {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        user-select: none;
+      }
+
+      /* 12.0s Master Timeline */
+      .s0-group { animation: s0Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+      .s1-group { animation: s1Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+      .s2-group { animation: s2Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+      .s3-group { animation: s3Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+      .s4-group { animation: s4Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+      .s5-group { animation: s5Timeline 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; transform-origin: 250px 250px; }
+
+      @keyframes s0Timeline {
+        0%, 14% { opacity: 1; transform: scale(1); visibility: visible; }
+        16.6%, 98% { opacity: 0; transform: scale(0.95); visibility: hidden; }
+        100% { opacity: 1; transform: scale(1); visibility: visible; }
+      }
+      @keyframes s1Timeline {
+        0%, 15% { opacity: 0; transform: scale(0.95); visibility: hidden; }
+        16.6%, 31% { opacity: 1; transform: scale(1); visibility: visible; }
+        33.3%, 100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+      }
+      @keyframes s2Timeline {
+        0%, 31.5% { opacity: 0; transform: scale(0.92); visibility: hidden; }
+        33.3%, 48% { opacity: 1; transform: scale(1); visibility: visible; }
+        50%, 100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+      }
+      @keyframes s3Timeline {
+        0%, 48.5% { opacity: 0; transform: scale(0.92); visibility: hidden; }
+        50%, 64.5% { opacity: 1; transform: scale(1); visibility: visible; }
+        66.6%, 100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+      }
+      @keyframes s4Timeline {
+        0%, 65% { opacity: 0; transform: scale(0.92); visibility: hidden; }
+        66.6%, 81.5% { opacity: 1; transform: scale(1); visibility: visible; }
+        83.3%, 100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+      }
+      @keyframes s5Timeline {
+        0%, 81.5% { opacity: 0; transform: scale(0.92); visibility: hidden; }
+        83.3%, 98% { opacity: 1; transform: scale(1); visibility: visible; }
+        100% { opacity: 0; transform: scale(1.05); visibility: hidden; }
+      }
+
+      /* Scene 0 Micro Physics */
+      .s0-sq { animation: s0SqDrop 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; transform-origin: 160px 150px; }
+      .s0-ci { animation: s0CiDrop 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; transform-origin: 345px 150px; }
+      .s0-pi { animation: s0PiAbsorb 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 250px 335px; }
+
+      @keyframes s0SqDrop {
+        0%, 4% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        6% { transform: translateY(-8px) rotate(-2deg); opacity: 1; }
+        8% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        11.5% { transform: translate(50px, 115px) rotate(12deg) scale(0.6); opacity: 0.95; }
+        13.5% { transform: translate(70px, 160px) rotate(16deg) scale(0.2); opacity: 0.5; }
+        14.5%, 100% { transform: translate(78px, 175px) rotate(18deg) scale(0); opacity: 0; }
+      }
+      @keyframes s0CiDrop {
+        0%, 4% { transform: translateY(0); opacity: 1; }
+        6% { transform: translateY(8px); opacity: 1; }
+        8% { transform: translateY(0); opacity: 1; }
+        11.5% { transform: translate(-50px, 115px) scale(0.6); opacity: 0.95; }
+        13.5% { transform: translate(-70px, 160px) scale(0.2); opacity: 0.5; }
+        14.5%, 100% { transform: translate(-78px, 175px) scale(0); opacity: 0; }
+      }
+      @keyframes s0PiAbsorb {
+        0%, 8% { transform: translateY(0); }
+        12% { transform: translateY(8px) scale(1.12, 0.88); }
+        14% { transform: translateY(-4px) scale(0.96, 1.05); }
+        15.5%, 100% { transform: translateY(0) scale(1); }
+      }
+
+      /* Scene 1 Typewriter */
+      .s1-text {
+        animation: s1TypeReveal 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        clip-path: inset(0 100% 0 0);
+      }
+      .s1-cursor {
+        animation: s1CursorTrack 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      }
+      @keyframes s1TypeReveal {
+        0%, 18% { clip-path: inset(0 100% 0 0); }
+        25%, 31% { clip-path: inset(0 0% 0 0); }
+        33.3%, 100% { clip-path: inset(0 0% 0 0); }
+      }
+      @keyframes s1CursorTrack {
+        0%, 18% { transform: translateX(0px); opacity: 1; }
+        25% { transform: translateX(235px); opacity: 1; }
+        26%, 28%, 30% { transform: translateX(235px); opacity: 1; }
+        27%, 29% { transform: translateX(235px); opacity: 0; }
+        31.5%, 100% { transform: translateX(235px); opacity: 0; }
+      }
+
+      /* Sparkles */
+      .sp-1 { animation: spTwinkle1 3s ease-in-out infinite; transform-origin: 180px 175px; }
+      .sp-2 { animation: spTwinkle2 2.4s ease-in-out infinite reverse; transform-origin: 255px 130px; }
+      .sp-3 { animation: spTwinkle3 2.8s ease-in-out infinite; transform-origin: 275px 205px; }
+      @keyframes spTwinkle1 { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.18) rotate(18deg); } }
+      @keyframes spTwinkle2 { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.22) rotate(-18deg); } }
+      @keyframes spTwinkle3 { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.15) rotate(14deg); } }
+
+      /* Shield & Check */
+      .s4-sh { animation: s4ShPop 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 295px 200px; }
+      .s4-ck { animation: s4CkDraw 12s ease-in-out infinite; stroke-dasharray: 80; stroke-dashoffset: 80; }
+      @keyframes s4ShPop {
+        0%, 66% { transform: scale(0) rotate(-25deg); opacity: 0; }
+        69%, 81% { transform: scale(1) rotate(0deg); opacity: 1; }
+        83%, 100% { transform: scale(0.8); opacity: 0; }
+      }
+      @keyframes s4CkDraw {
+        0%, 68.5% { stroke-dashoffset: 80; }
+        71%, 81% { stroke-dashoffset: 0; }
+        83%, 100% { stroke-dashoffset: 80; }
+      }
+
+      /* Orbit items */
+      .s5-orb { animation: s5OrbFloat 3.5s ease-in-out infinite alternate; }
+      @keyframes s5OrbFloat { 0% { transform: translateY(0px); } 100% { transform: translateY(-7px); } }
+    </style>
+
+    <clipPath id="av1"><circle cx="120" cy="120" r="36" /></clipPath>
+    <clipPath id="av2"><circle cx="250" cy="95" r="36" /></clipPath>
+    <clipPath id="av3"><circle cx="120" cy="380" r="36" /></clipPath>
+    <clipPath id="av4"><circle cx="380" cy="380" r="36" /></clipPath>
+
+    <g id="sparkStar">
+      <path d="M0,-40 C0,-15 15,0 40,0 C15,0 0,15 0,40 C0,15 -15,0 -40,0 C-15,0 0,-15 0,-40 Z" fill="#A0BBFF" />
+    </g>
+
+    <!-- Signature Theme Gradient: Brand Blue (#A0BBFF) to Brand Copper (#cf6733) -->
+    <linearGradient id="shGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A0BBFF" />
+      <stop offset="100%" stop-color="#cf6733" />
+    </linearGradient>
+  </defs>
+
+  <g class="hero-svg-root">
+    <!-- SCENE 0 -->
+    <g class="s0-group">
+      <rect class="s0-sq" x="90" y="80" width="145" height="145" rx="36" fill="#b4696a" />
+      <circle class="s0-ci" cx="345" cy="152" r="72" fill="#cf6733" />
+      <rect class="s0-pi" x="75" y="270" width="350" height="130" rx="65" fill="#A0BBFF" />
+    </g>
+
+    <!-- SCENE 1 -->
+    <g class="s1-group">
+      <rect x="45" y="195" width="410" height="110" rx="55" fill="#A0BBFF" />
+      <g transform="translate(100, 235)">
+        <text class="s1-text-question" x="0" y="26" fill="#0F1012" font-size="20" font-weight="700" letter-spacing="-0.02em">
+          What are you trying to make possible?
+        </text>
+        <text class="s1-text-answer" x="0" y="26" fill="#0F1012" font-size="27" font-weight="800" letter-spacing="-0.025em">
+          Start there.
+        </text>
+        <rect class="s1-kinetic-cursor" x="0" y="2" width="3.5" height="30" rx="1.75" fill="#0F1012" />
+      </g>
+    </g>
+
+    <!-- SCENE 2 -->
+    <g class="s2-group">
+      <rect x="60" y="60" width="380" height="380" rx="42" fill="#F7F4EF" />
+      <g transform="translate(180, 175) scale(0.95)" class="sp-1"><use href="#sparkStar" fill="#A0BBFF" /></g>
+      <g transform="translate(255, 130) scale(0.6)" class="sp-2"><use href="#sparkStar" fill="#cf6733" /></g>
+      <g transform="translate(275, 205) scale(0.45)" class="sp-3"><use href="#sparkStar" fill="#b4696a" /></g>
+      <text x="105" y="325" fill="#0F1012" font-size="30" font-weight="700" letter-spacing="-0.025em">
+        <tspan x="105" dy="0">Get smart AI</tspan>
+        <tspan x="105" dy="40">guided</tspan>
+        <tspan x="105" dy="40">suggestions</tspan>
+      </text>
+    </g>
+
+    <!-- SCENE 3 -->
+    <g class="s3-group">
+      <g>
+        <rect x="75" y="115" width="350" height="76" rx="38" fill="#A0BBFF" />
+        <text x="250" y="162" fill="#0F1012" font-size="26" font-weight="700" text-anchor="middle" letter-spacing="-0.01em">Modern</text>
+      </g>
+      <g>
+        <rect x="95" y="212" width="310" height="76" rx="38" fill="#b4696a" />
+        <text x="250" y="259" fill="#FFFFFF" font-size="26" font-weight="700" text-anchor="middle" letter-spacing="-0.01em">Clean</text>
+      </g>
+      <g>
+        <rect x="75" y="309" width="350" height="76" rx="38" fill="#cf6733" />
+        <text x="250" y="356" fill="#FFFFFF" font-size="26" font-weight="700" text-anchor="middle" letter-spacing="-0.01em">Professional</text>
+      </g>
+    </g>
+
+    <!-- SCENE 4 -->
+    <g class="s4-group">
+      <rect x="155" y="70" width="190" height="225" rx="24" fill="#F7F4EF" stroke="#A0BBFF" stroke-width="10" stroke-linejoin="round" />
+      <line x1="195" y1="140" x2="260" y2="140" stroke="#A0BBFF" stroke-width="9" stroke-linecap="round" />
+      <line x1="195" y1="180" x2="280" y2="180" stroke="#A0BBFF" stroke-width="9" stroke-linecap="round" />
+      <line x1="195" y1="220" x2="245" y2="220" stroke="#A0BBFF" stroke-width="9" stroke-linecap="round" />
+      <g class="s4-sh">
+        <path d="M295,120 L360,150 C360,150 368,230 295,285 C222,230 230,150 230,150 L295,120 Z" fill="url(#shGrad)" stroke="#F7F4EF" stroke-width="7" stroke-linejoin="round" />
+        <path class="s4-ck" d="M265,205 L286,226 L328,172" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+      <text x="250" y="355" fill="#F7F4EF" font-size="25" font-weight="700" text-anchor="middle" letter-spacing="-0.02em">
+        <tspan x="250" dy="0">Your sensitive info,</tspan>
+        <tspan x="250" dy="35">securely protected.</tspan>
+      </text>
+    </g>
+
+    <!-- SCENE 5 -->
+    <g class="s5-group">
+      <text x="250" y="235" fill="#F7F4EF" font-size="23" font-weight="700" text-anchor="middle" letter-spacing="-0.025em">
+        <tspan x="250" dy="0">Used by business owners,</tspan>
+        <tspan x="250" dy="32">designers and agencies.</tspan>
+      </text>
+      <g class="s5-orb">
+        <circle cx="120" cy="120" r="38" fill="#F7F4EF" stroke="#A0BBFF" stroke-width="2" />
+        <image href="/assets/hero-anim-0.png" x="84" y="84" width="72" height="72" clip-path="url(#av1)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g class="s5-orb" style="animation-delay: -0.7s;">
+        <circle cx="250" cy="95" r="38" fill="#F7F4EF" stroke="#A0BBFF" stroke-width="2" />
+        <image href="/assets/hero-anim-1.png" x="214" y="59" width="72" height="72" clip-path="url(#av2)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g class="s5-orb" style="animation-delay: -1.4s;">
+        <circle cx="380" cy="120" r="38" fill="#cf6733" />
+        <text x="380" y="133" fill="#FFFFFF" font-size="38" font-weight="900" text-anchor="middle">S</text>
+      </g>
+      <g class="s5-orb" style="animation-delay: -2.1s;">
+        <circle cx="120" cy="380" r="38" fill="#F7F4EF" stroke="#A0BBFF" stroke-width="2" />
+        <image href="/assets/hero-anim-2.png" x="84" y="344" width="72" height="72" clip-path="url(#av3)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g class="s5-orb" style="animation-delay: -2.8s;">
+        <circle cx="250" cy="405" r="38" fill="#191A1D" stroke="#A0BBFF" stroke-width="1.5" />
+        <path d="M233,395 L238,395 L233,415 L228,415 Z M247,395 L252,395 L247,415 L242,415 Z M261,395 L266,395 L261,415 L256,415 Z" fill="#FFFFFF" />
+      </g>
+      <g class="s5-orb" style="animation-delay: -3.5s;">
+        <circle cx="380" cy="380" r="38" fill="#F7F4EF" stroke="#A0BBFF" stroke-width="2" />
+        <image href="/assets/hero-anim-5.png" x="344" y="344" width="72" height="72" clip-path="url(#av4)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+    </g>
+  </g>
+</svg>

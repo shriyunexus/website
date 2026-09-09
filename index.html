@@ -1,15 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-preloading="true">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Design & Brand Acceleration for SaaS Startups — Shriyu Nexus Solutions</title>
-    <meta name="description" content="Shriyu Nexus Solutions is a digital brand design agency providing design & brand acceleration, UI/UX, and product scaling for SaaS and Crypto startups." />
+    <title>Shriyu Nexus Solutions — Digital Products & Systems</title>
+    <meta name="description" content="Shriyu Nexus Solutions builds digital products, software systems, and high-performance technology for modern enterprises." />
+
+    <!-- Zero-Flash Preloader Critical Shell & Scroll Blocker -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      html[data-preloading="true"],
+      html[data-preloading="true"] body {
+        background-color: #0F1012 !important;
+        overflow: hidden !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        touch-action: none !important;
+      }
+      /* Prevent any page or hero section flash prior to preloader completion */
+      html[data-preloading="true"] #root .app-container {
+        visibility: hidden !important;
+      }
+      html[data-preloading="revealing"] #root .app-container {
+        visibility: visible !important;
+      }
+    </style>
+    <script>
+      // Immediate scroll lock and restoration neutralization
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+    </script>
+    
+    <!-- Official Brand Favicon & Apple Touch Icon -->
+    <link rel="icon" type="image/png" href="/logo/shryu-sky-tp-logo.png" />
+    <link rel="apple-touch-icon" href="/logo/shryu-sky-tp-logo.png" />
+
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   </head>
-  <body class="page-dark">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

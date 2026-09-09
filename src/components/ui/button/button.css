@@ -1,0 +1,517 @@
+/* ==========================================================================
+   SHRIYU NEXUS — UNIFIED DESIGN SYSTEM BUTTON (`ui/button`)
+   Enterprise component with Ronas IT direction-aware liquid fill physics
+   and kinetic trajectory arrow alternative (centered diamond nexus).
+   ========================================================================== */
+
+.shriyu-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  /* CRITICAL: Zero jumping or scaling on hover */
+  transform: none !important;
+  transition:
+    background-color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.shriyu-btn:focus-visible {
+  outline: 2px solid var(--brand-blue, #A0BBFF);
+  outline-offset: 3px;
+}
+
+/* ── Direction-Aware Expanding Fill Circle (Ronas IT Physics) ──────────── */
+.shriyu-btn-fill {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  transform: translate(-50%, -50%) scale(0);
+  will-change: transform, left, top;
+  background: var(--brand-blue, #A0BBFF);
+}
+
+/* ── Protected Content Layer (Always Above Fill) ────────────────────────── */
+.shriyu-btn-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+
+.shriyu-btn-label {
+  line-height: 1;
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Kinetic Trajectory Arrow Alternative (Centered Diamond Nexus) ──────── */
+.shriyu-btn-trajectory {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 20px;
+  height: 1.5px;
+  flex-shrink: 0;
+  margin-left: 12px;
+  margin-right: 4px;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+
+.shriyu-btn-diamond {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 5.5px;
+  height: 5.5px;
+  border-radius: 0.75px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Hover expansion of trajectory filament & diamond nexus */
+.shriyu-btn:hover .shriyu-btn-trajectory,
+.shriyu-btn.is-hovered .shriyu-btn-trajectory {
+  width: 28px;
+}
+
+.shriyu-btn:hover .shriyu-btn-diamond,
+.shriyu-btn.is-hovered .shriyu-btn-diamond {
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+}
+
+/* ==========================================================================
+   VARIANT: PRIMARY (Tonal Luxury Capsule — Surface & Elevated Theme Match)
+   Light theme: linear-gradient(135deg, var(--bg-surface, #E8DFD3) 0%, var(--bg-elevated, #DBD0C3) 100%)
+   Dark theme: linear-gradient(135deg, var(--bg-elevated, #282624) 0%, var(--bg-surface, #191A1D) 100%)
+   ========================================================================== */
+.shriyu-btn--primary {
+  padding: 13.5px 28px 13.5px 30px;
+  font-size: 14.5px;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--bg-elevated, #282624) 0%, var(--bg-surface, #191A1D) 100%);
+  color: var(--text-primary, #F7F4EF);
+  border: 1px solid var(--border-elevated, rgba(255, 255, 255, 0.14));
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 8px 24px -4px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.shriyu-btn--primary .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+.shriyu-btn--primary .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(247, 244, 239, 0.2) 0%, var(--text-primary, #F7F4EF) 100%);
+}
+
+.shriyu-btn--primary .shriyu-btn-diamond {
+  background: var(--text-primary, #F7F4EF);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+}
+
+.shriyu-btn--primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
+  transition: left 0.4s ease, right 0.4s ease, opacity 0.4s ease;
+}
+
+.shriyu-btn--primary:hover::before,
+.shriyu-btn--primary.is-hovered::before {
+  left: 8%;
+  right: 8%;
+  opacity: 1;
+}
+
+.shriyu-btn--primary:hover,
+.shriyu-btn--primary.is-hovered {
+  border-color: var(--brand-blue, #A0BBFF);
+  box-shadow:
+    0 10px 32px -4px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.shriyu-btn--primary:hover .shriyu-btn-label,
+.shriyu-btn--primary.is-hovered .shriyu-btn-label {
+  color: #121316;
+}
+
+.shriyu-btn--primary:hover .shriyu-btn-trajectory,
+.shriyu-btn--primary.is-hovered .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(18, 19, 22, 0.2) 0%, #121316 100%);
+}
+
+.shriyu-btn--primary:hover .shriyu-btn-diamond,
+.shriyu-btn--primary.is-hovered .shriyu-btn-diamond {
+  background: #121316;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Primary — Light Theme Inversion (Using --bg-surface: #E8DFD3 & --bg-elevated: #DBD0C3) */
+[data-theme="light"] .shriyu-btn--primary {
+  background: linear-gradient(135deg, var(--bg-surface, #E8DFD3) 0%, var(--bg-elevated, #DBD0C3) 100%);
+  color: var(--text-primary, #211F1D);
+  border: 1px solid rgba(33, 31, 29, 0.16);
+  box-shadow:
+    0 1px 2px rgba(33, 31, 29, 0.08),
+    0 8px 24px -4px rgba(33, 31, 29, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(33, 31, 29, 0.1);
+}
+
+[data-theme="light"] .shriyu-btn--primary::before {
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
+}
+
+[data-theme="light"] .shriyu-btn--primary .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+[data-theme="light"] .shriyu-btn--primary .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(33, 31, 29, 0.2) 0%, var(--text-primary, #211F1D) 100%);
+}
+
+[data-theme="light"] .shriyu-btn--primary .shriyu-btn-diamond {
+  background: var(--text-primary, #211F1D);
+  border: 1px solid rgba(33, 31, 29, 0.4);
+  box-shadow: none;
+}
+
+[data-theme="light"] .shriyu-btn--primary:hover,
+[data-theme="light"] .shriyu-btn--primary.is-hovered {
+  border-color: var(--brand-blue, #A0BBFF);
+  box-shadow:
+    0 10px 30px -4px rgba(33, 31, 29, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .shriyu-btn--primary:hover .shriyu-btn-label,
+[data-theme="light"] .shriyu-btn--primary.is-hovered .shriyu-btn-label {
+  color: #121316;
+}
+
+[data-theme="light"] .shriyu-btn--primary:hover .shriyu-btn-trajectory,
+[data-theme="light"] .shriyu-btn--primary.is-hovered .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(18, 19, 22, 0.2) 0%, #121316 100%);
+}
+
+[data-theme="light"] .shriyu-btn--primary:hover .shriyu-btn-diamond,
+[data-theme="light"] .shriyu-btn--primary.is-hovered .shriyu-btn-diamond {
+  background: #121316;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   VARIANT: QUIET (Glassmorphic Specular Capsule Pill)
+   ========================================================================== */
+.shriyu-btn--quiet {
+  padding: 12px 22px 12px 24px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.shriyu-btn--quiet .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+.shriyu-btn--quiet .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0%, var(--brand-blue, #A0BBFF) 100%);
+}
+
+.shriyu-btn--quiet .shriyu-btn-diamond {
+  background: #FFFFFF;
+  box-shadow: 0 0 6px var(--brand-blue, #A0BBFF);
+}
+
+.shriyu-btn--quiet:hover,
+.shriyu-btn--quiet.is-hovered {
+  border-color: color-mix(in srgb, var(--brand-blue, #A0BBFF) 70%, #ffffff);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.shriyu-btn--quiet:hover .shriyu-btn-label,
+.shriyu-btn--quiet.is-hovered .shriyu-btn-label {
+  color: #121316;
+}
+
+.shriyu-btn--quiet:hover .shriyu-btn-trajectory,
+.shriyu-btn--quiet.is-hovered .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(18, 19, 22, 0.2) 0%, #121316 100%);
+}
+
+.shriyu-btn--quiet:hover .shriyu-btn-diamond,
+.shriyu-btn--quiet.is-hovered .shriyu-btn-diamond {
+  background: #121316;
+  box-shadow: none;
+}
+
+/* Quiet — Light Theme Inversion */
+[data-theme="light"] .shriyu-btn--quiet {
+  background: rgba(33, 31, 29, 0.045);
+  color: var(--text-primary);
+  border-color: rgba(33, 31, 29, 0.12);
+  box-shadow:
+    0 2px 10px rgba(33, 31, 29, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .shriyu-btn--quiet .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+[data-theme="light"] .shriyu-btn--quiet .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(18, 19, 22, 0.2) 0%, #121316 100%);
+}
+
+[data-theme="light"] .shriyu-btn--quiet .shriyu-btn-diamond {
+  background: #121316;
+  box-shadow: none;
+}
+
+[data-theme="light"] .shriyu-btn--quiet:hover,
+[data-theme="light"] .shriyu-btn--quiet.is-hovered {
+  border-color: var(--brand-blue, #A0BBFF);
+  box-shadow: 0 6px 22px rgba(33, 31, 29, 0.12);
+}
+
+[data-theme="light"] .shriyu-btn--quiet:hover .shriyu-btn-label,
+[data-theme="light"] .shriyu-btn--quiet.is-hovered .shriyu-btn-label {
+  color: #121316;
+}
+
+[data-theme="light"] .shriyu-btn--quiet:hover .shriyu-btn-trajectory,
+[data-theme="light"] .shriyu-btn--quiet.is-hovered .shriyu-btn-trajectory {
+  background: linear-gradient(90deg, rgba(18, 19, 22, 0.2) 0%, #121316 100%);
+}
+
+[data-theme="light"] .shriyu-btn--quiet:hover .shriyu-btn-diamond,
+[data-theme="light"] .shriyu-btn--quiet.is-hovered .shriyu-btn-diamond {
+  background: #121316;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   VARIANT: SECONDARY (Text Trigger with Kinetic Baseline Filament)
+   ========================================================================== */
+.shriyu-btn--secondary {
+  flex-direction: column;
+  padding: 16px 26px;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: clamp(14px, 1.05vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-sm);
+  border: none;
+  box-shadow: none;
+}
+
+.shriyu-btn--secondary .shriyu-btn-secondary-line {
+  width: 0;
+  height: 1px;
+  background: var(--brand-blue, #A0BBFF);
+  margin-top: 4px;
+  transition: width 0.3s var(--ease-out);
+}
+
+.shriyu-btn--secondary:hover {
+  color: var(--brand-blue, #A0BBFF);
+}
+
+.shriyu-btn--secondary:hover .shriyu-btn-secondary-line {
+  width: 100%;
+}
+
+/* ==========================================================================
+   VARIANT: ACCENT / NAV CONTACT (Signature Terracotta / Copper Pill)
+   Encapsulates the navbar contact CTA with direction-aware liquid fill physics
+   without altering its signature accent color palette.
+   ========================================================================== */
+.shriyu-btn--accent,
+.shriyu-btn--nav {
+  padding: 9px 24px;
+  border-radius: 8px;
+  background: var(--accent-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 6px 20px -2px rgba(184, 111, 82, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.shriyu-btn--accent::before,
+.shriyu-btn--nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16%;
+  right: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
+  transition: left 0.35s ease, right 0.35s ease, opacity 0.35s ease;
+}
+
+.shriyu-btn--accent:hover::before,
+.shriyu-btn--accent.is-hovered::before,
+.shriyu-btn--nav:hover::before,
+.shriyu-btn--nav.is-hovered::before {
+  left: 8%;
+  right: 8%;
+  opacity: 1;
+}
+
+.shriyu-btn--accent .shriyu-btn-fill,
+.shriyu-btn--nav .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+.shriyu-btn--accent:hover,
+.shriyu-btn--accent.is-hovered,
+.shriyu-btn--nav:hover,
+.shriyu-btn--nav.is-hovered {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 8px 24px -2px rgba(184, 111, 82, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.shriyu-btn--accent:hover .shriyu-btn-label,
+.shriyu-btn--accent.is-hovered .shriyu-btn-label,
+.shriyu-btn--nav:hover .shriyu-btn-label,
+.shriyu-btn--nav.is-hovered .shriyu-btn-label {
+  color: #ffffff;
+}
+
+/* Accent / Nav — Light Theme Support */
+[data-theme="light"] .shriyu-btn--accent,
+[data-theme="light"] .shriyu-btn--nav {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 1px 2px rgba(180, 105, 106, 0.2),
+    0 6px 20px -2px rgba(180, 105, 106, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .shriyu-btn--accent:hover,
+[data-theme="light"] .shriyu-btn--accent.is-hovered,
+[data-theme="light"] .shriyu-btn--nav:hover,
+[data-theme="light"] .shriyu-btn--nav.is-hovered {
+  box-shadow:
+    0 1px 2px rgba(180, 105, 106, 0.25),
+    0 8px 24px -2px rgba(180, 105, 106, 0.55),
+    0 0 16px -2px rgba(160, 187, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+[data-theme="light"] .shriyu-btn--accent .shriyu-btn-fill,
+[data-theme="light"] .shriyu-btn--nav .shriyu-btn-fill {
+  background: var(--brand-blue, #A0BBFF);
+}
+
+[data-theme="light"] .shriyu-btn--accent:hover,
+[data-theme="light"] .shriyu-btn--accent.is-hovered,
+[data-theme="light"] .shriyu-btn--nav:hover,
+[data-theme="light"] .shriyu-btn--nav.is-hovered {
+  border-color: var(--brand-blue, #A0BBFF);
+  box-shadow:
+    0 6px 22px rgba(160, 187, 255, 0.5),
+    0 0 16px -2px rgba(160, 187, 255, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .shriyu-btn--accent:hover .shriyu-btn-label,
+[data-theme="light"] .shriyu-btn--accent.is-hovered .shriyu-btn-label,
+[data-theme="light"] .shriyu-btn--nav:hover .shriyu-btn-label,
+[data-theme="light"] .shriyu-btn--nav.is-hovered .shriyu-btn-label {
+  color: #ffffff;
+}
+
+/* Full-width drawer variant */
+.shriyu-btn--accent.full,
+.shriyu-btn--nav.full {
+  width: 100%;
+  padding: 13px 28px;
+  font-size: 16px;
+  border-radius: 8px;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   SIZES
+   ========================================================================== */
+.shriyu-btn--sm {
+  padding: 10px 20px;
+  font-size: 12.5px;
+  border-radius: 6px;
+}
+
+.shriyu-btn--lg {
+  padding: 18px 36px;
+  font-size: clamp(14.5px, 1.1vw, 15.5px);
+  border-radius: 10px;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: PREFERS REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .shriyu-btn-fill {
+    display: none !important;
+  }
+  .shriyu-btn,
+  .shriyu-btn-trajectory,
+  .shriyu-btn-diamond,
+  .shriyu-btn-secondary-line {
+    transition: none !important;
+  }
+}
