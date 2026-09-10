@@ -353,7 +353,7 @@ export default function HowToStart({ onOpenModal }) {
         {/* ── Hero Positioning Header ─────────────────────────────────── */}
         <div className="start-hero-header">
           <h2 className="start-headline" ref={headlineRef}>
-            {renderRevealText("Bring Us the Problem. We'll Find the Opportunity.")}
+            Masonry Grid{renderRevealText("Bring Us the Problem. We'll Find the Opportunity.")}
           </h2>
 
           <p className="start-lead-context" ref={leadRef}>

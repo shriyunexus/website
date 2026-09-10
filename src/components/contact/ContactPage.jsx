@@ -725,22 +725,40 @@ export default function ContactPage({ onStartConversation }) {
                   <h3 className="contact-card-title">Direct Inquiries</h3>
                 </div>
                 <div className="contact-card-bottom">
-                  <a
-                    href="mailto:shriyunexus@gmail.com"
-                    className="contact-card-value"
-                    title="Send direct email"
-                  >
-                    shriyunexus@gmail.com
-                  </a>
+                  <div className="contact-card-value-row">
+                    <span className="contact-card-value">shriyunexus@gmail.com</span>
+                    <button
+                      type="button"
+                      className="contact-copy-round"
+                      onClick={handleCopyEmail}
+                      title={emailCopied ? "Email copied to clipboard!" : "Copy email address"}
+                      aria-label="Copy email address"
+                    >
+                      {emailCopied ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                   <p className="contact-card-desc">For partnerships, scoping, and new builds</p>
-                  <button
-                    type="button"
-                    className="contact-copy-pill"
-                    onClick={handleCopyEmail}
-                    title="Copy email address"
-                  >
-                    {emailCopied ? '✓ Copied to clipboard' : 'Copy Email Address'}
-                  </button>
+                  <div className="contact-card-actions">
+                    <a
+                      href="mailto:shriyunexus@gmail.com"
+                      className="contact-copy-pill"
+                      title="Send mail to shriyunexus@gmail.com"
+                    >
+                      <span>Send Mail</span>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -759,15 +777,39 @@ export default function ContactPage({ onStartConversation }) {
                   <h3 className="contact-card-title">Contact Number</h3>
                 </div>
                 <div className="contact-card-bottom">
-                  <a
-                    href="tel:+918160156799"
-                    className="contact-card-value"
-                    title="Call direct"
-                  >
-                    +91 8160156799
-                  </a>
+                  <div className="contact-card-value-row">
+                    <span className="contact-card-value">+91 8160156799</span>
+                    <button
+                      type="button"
+                      className="contact-copy-round"
+                      onClick={handleCopyPhone}
+                      title={phoneCopied ? "Phone number copied to clipboard!" : "Copy phone number"}
+                      aria-label="Copy phone number"
+                    >
+                      {phoneCopied ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                   <p className="contact-card-desc">Direct executive voice &amp; WhatsApp messaging</p>
-                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+                  <div className="contact-card-actions">
+                    <a
+                      href="tel:+918160156799"
+                      className="contact-copy-pill"
+                      title="Call +91 8160156799"
+                    >
+                      <span>Call</span>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                      </svg>
+                    </a>
                     <a
                       href="https://wa.me/918160156799?text=Hello%20Shriyu%20Nexus%20team%2C%20I%20would%20like%20to%20discuss%20our%20project%20requirements%20and%20explore%20collaborating%20with%20you."
                       target="_blank"
@@ -775,16 +817,11 @@ export default function ContactPage({ onStartConversation }) {
                       className="contact-copy-pill"
                       title="Chat on WhatsApp"
                     >
-                      WhatsApp Chat ↗
+                      <span>WhatsApp</span>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M7 17L17 7M17 7H7M17 7V17" />
+                      </svg>
                     </a>
-                    <button
-                      type="button"
-                      className="contact-copy-pill"
-                      onClick={handleCopyPhone}
-                      title="Copy phone number"
-                    >
-                      {phoneCopied ? '✓ Copied' : 'Copy Number'}
-                    </button>
                   </div>
                 </div>
               </div>
